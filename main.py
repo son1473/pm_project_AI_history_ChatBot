@@ -54,13 +54,30 @@ session_state = {
 # 메인페이지 라우팅
 @app.route('/')
 def index():
-    
     return render_template('main.html')
 
 # 챗봇 라우팅
-@app.route('/two')
+@app.route('/sejong')
 def index2():
-    return render_template('chatbot.html')
+    return render_template('kingsejong_chatbot.html')
+
+# 챗봇 라우팅
+@app.route('/ahnjunggeun')
+def index2():
+    return render_template('ahnjunggeun_chatbot.html')
+
+# 챗봇 라우팅
+@app.route('/sunduk')
+def index2():
+    return render_template('queensunduk_chatbot.html')
+
+@app.route('/select')
+def index3():
+    return render_template('selelct_character.html')
+
+@app.route('/story')
+def index3():
+    return render_template('storytelling.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
