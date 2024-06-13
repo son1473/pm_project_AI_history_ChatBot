@@ -51,12 +51,13 @@ session_state = {
 
 
 
-
+# 메인페이지 라우팅
 @app.route('/')
 def index():
     
-    return render_template('page1.html')
+    return render_template('main.html')
 
+# 챗봇 라우팅
 @app.route('/two')
 def index2():
     return render_template('chatbot.html')
