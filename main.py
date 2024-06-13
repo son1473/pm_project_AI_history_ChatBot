@@ -63,20 +63,20 @@ def index2():
 
 # 챗봇 라우팅
 @app.route('/ahnjunggeun')
-def index2():
+def index3():
     return render_template('ahnjunggeun_chatbot.html')
 
 # 챗봇 라우팅
 @app.route('/sunduk')
-def index2():
+def index4():
     return render_template('queensunduk_chatbot.html')
 
 @app.route('/select')
-def index3():
+def index5():
     return render_template('selelct_character.html')
 
 @app.route('/story')
-def index3():
+def index6():
     return render_template('storytelling.html')
 
 @app.route('/chat', methods=['POST'])
