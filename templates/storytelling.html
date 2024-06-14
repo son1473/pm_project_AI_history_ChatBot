@@ -85,20 +85,25 @@
             display: flex;
             justify-content: space-between;
             margin-top: 0.5rem;
+            margin-left: 40px;
+        }
+
+        .npc-options-vertical {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            margin-left: 40px;
         }
 
         .npc-option {
             /* width: 100px; */
-            width: 100%;
-            margin: 0 20px;
-            background-color: rgba(223, 204, 116, 0.3);
-            border-color: #ffb605;
+            width: 75%;
+            margin: 0px 10px 10px 10px;
+            /* margin: 0px 20px; */
+            background-color: rgba(255, 226, 90, 0.5);
             color: black;
             border-radius: 10px;
-        }
-
-        .npc-option:hover {
-            background-color: #ffb605;
         }
 
         .divider {
@@ -306,8 +311,8 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
-                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
+                <div class="npc-options rounded npc-options-vertical">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow2('${character}');">
                         어떤 사람이었어?
                     </div>
                     <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
@@ -330,6 +335,54 @@
             chatBody.scrollTop = chatBody.scrollHeight;
 
         }
+
+        // what do you want to know 2
+        function whatdoyouwanttoknow2(character) {
+
+            let newMessage = document.createElement("div");
+            newMessage.className = "npc";
+            newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text">${character}의 무엇이 궁금해?
+                        </div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                <div class="npc-options rounded npc-options-vertical">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow('${character}');">
+                        어떤 사람이었어?
+                    </div>
+                    <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
+                        무슨 일을 했어?
+                    </div>
+                    <div class="btn npc-option" onclick="selectOptionByUser('재밌는 이야기 알려줘'); funstory('${character}');">
+                        재밌는 이야기 알려줘
+                    </div>
+                    <div class="btn npc-option" style="background-color: #FFD464" onclick="showAllPeople()";">
+                        다른 인물의 이야기 듣기
+                    </div>
+                    
+                </div>
+            </div>
+            `;
+
+            // Get the chat body element where you want to append the new message
+            let chatBody = document.getElementById("chat-body");
+
+            // Append the new message to the chat body
+            chatBody.appendChild(newMessage);
+
+            // Scroll to the bottom of the chat body (optional)
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+        }
+
+
+
+
 
         // 유저 클릭시 npc 역할2
         function whatkindofperson(character) {
@@ -385,7 +438,7 @@
 
             for (let job of job_list) {
                 htmlString += `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}'); whatdoyouwanttoknow2('${character}');">
                     ${job}
                 </div>
                 `
@@ -403,7 +456,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
+                <div class="npc-options rounded npc-options-vertical">
                     ${htmlString}
                 </div>
             </div>
@@ -459,6 +512,8 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
+
+        // 재밌는 이야기 옵션 제공
         function funstory(character) {
             let story_list = []
 
@@ -474,7 +529,7 @@
 
             for (let story of story_list) {
                 htmlString += `
-                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}'); whatdoyouwanttoknow2('${character}');">
                     ${story}
                 </div>
                 `
@@ -492,7 +547,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
+                <div class="npc-options rounded npc-options-vertical">
                     ${htmlString}
                 </div>
             </div>
@@ -508,6 +563,7 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
+        // 재밌는 이야기 답변
         function storyInfo(story, character) {
 
             let story_list = []
@@ -580,6 +636,53 @@
                     </div>
                 </div>
             </div>
+            `;
+
+            // Get the chat body element where you want to append the new message
+            let chatBody = document.getElementById("chat-body");
+
+            // Append the new message to the chat body
+            chatBody.appendChild(newMessage);
+
+            // Scroll to the bottom of the chat body (optional)
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function showAllPeople() {
+            let newMessage = document.createElement("div");
+            newMessage.className = "npc";
+            newMessage.innerHTML = `
+                    <!-- npc 메시지 -->
+                    <div class="npc-message">
+                        <img src="/static/owl.png" height="50px" alt="" />
+                        <div class="npc-message-box">
+                            <div class="message-sender">역사 천재</div>
+                            <div class="message-text">안녕! 난 너에게 이야기를 해줄 부엉이 선생님이야!
+                                어떤 인물의 이야기를 듣고 싶어?
+                            </div>
+                        </div>
+                    </div>
+                    <!-- npc 채팅 옵션 -->
+                    <div class="npc-options rounded">
+                        <div class="btn npc-option" onclick="selectOptionByUser('선덕여왕'); whatdoyouwanttoknow('선덕여왕');">
+                            선덕여왕
+                        </div>
+                        <div class="btn npc-option" onclick="selectOptionByUser('세종대왕'); whatdoyouwanttoknow('세종대왕');">
+                            세종대왕
+                        </div>
+                        <div class="btn npc-option" onclick="selectOptionByUser('안중근'); whatdoyouwanttoknow('안중근');">
+                            안중근
+                        </div>
+                    </div>
+                </div>
+                <!-- 옵션 클릭 사용자 메시지 -->
+                <div class="sent-message">
+                    <img src="" alt="" />
+                    <div class="sent-message-box d-none">
+                        <div class="message-sender text-end">You</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
             `;
 
             // Get the chat body element where you want to append the new message
