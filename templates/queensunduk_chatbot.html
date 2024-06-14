@@ -13,15 +13,16 @@
             overflow-x: hidden;
         }
         .header {
+            padding: 1rem;
+            background-color: #ffffff;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            height: 10vh; /* 높이를 10vh로 조정 */
-            padding: 0 20px; /* 양쪽에 여백 추가 */
+            justify-content: space-between;
         }
         .header .header_title {
             flex: 1;
             text-align: center; /* 텍스트 중앙 정렬 */
+            font-family: "Song Myung", serif;
         }
         .chat-container {
             display: flex;
@@ -41,6 +42,7 @@
             align-items: center;
             margin-bottom: 15px;
             position: relative; /* 상대적 위치 설정 */
+            font-family: "Noto Sans KR", sans-serif;
         }
         .chatBox .message.bot {
             justify-content: flex-start;
@@ -166,6 +168,9 @@
             background-color: #66b992;
         }
     </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&family=Song+Myung&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="header">
