@@ -85,7 +85,7 @@ def chat():
 
 
     user_input = request.json.get('message')
-    # initial_content = '조선시대 사람들이 쓰는 말투를 썼으면 좋겠어  근엄한 말투로 먼저 인사해주고 다음 내용에 대해 이야기하듯이 대답해줘'
+    initial_content = '조선시대 사람들이 쓰는 말투를 썼으면 좋겠어  근엄한 말투로 먼저 인사해주고 다음 내용에 대해 이야기하듯이 대답해줘'
     characters = ["queensunduk", "kingsejong", "ahnjunggeun"]
     character = characters[0]
     
