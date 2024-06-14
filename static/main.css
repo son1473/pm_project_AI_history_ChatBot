@@ -400,3 +400,16 @@ tr:last-child td {
   background-size: contain;
   animation: rotate 5s linear 0s infinite alternate;
 }
+
+
+.do-hyeon-regular {
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.jua-regular {
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
