@@ -58,6 +58,7 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
+            margin-top: 10px;
         }
         .box2 {
             width: 70%; /* 상자의 너비 */
@@ -91,7 +92,7 @@
         }
         .background img {
             width: 100vw;
-            height: 75vw;
+            height: 100%;
             object-fit: cover;
         }
         .container h3 {
@@ -100,13 +101,16 @@
         h3 {
         font-family: 'Do Hyeon', sans-serif;
         }
+        .rf{
+            margin-top: 30px;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+    <div class="container">
     <h3>이야기를 들려주는</h3>
     <div class="image-container">
         <img src="..\static\yellowband.png" alt="Description of Image">
@@ -116,15 +120,18 @@
             <span>천</span><span>재</span>
         </div>
     </div>
-    <div class="image-container">
-        <img src="..\static\owl.png" alt="Description of Image">
-    </div>
-    <div class="box">
-        역사천재의 이야기 듣기
-    </div>
-    <div class="box2">
-        인물과 이야기하기
-    </div>    
+    <!-- <div> -->
+        <div class="image-container" style="margin-top: 20%;">
+            <img src="..\static\owl.png" alt="Description of Image">
+        </div>
+        <div class="box">
+            역사천재의 이야기 듣기
+        </div>
+        <div class="box2">
+            인물과 이야기하기
+        </div>    
+    <!-- </div> -->
+
 </div>
 <div class="background">
     <img src="..\static\background.jpg" alt="">
@@ -133,11 +140,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.box').addEventListener('click', function() {
-        window.location.href = '/storytelling';
+        window.location.href = '/story';
     });
 
     document.querySelector('.box2').addEventListener('click', function() {
-        window.location.href = '/selelct_character';
+        window.location.href = '/select';
     });
 });
 </script>
