@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>main</title>
+  <style>
+    .text {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-size: 25px;
+        }
+    .blue-text {
+        color: rgb(22, 90, 122, 0.8); /* 파란색으로 설정 */
+        }
+
+    .text2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-size: 14px;
+    }
+
+    .image-container {
+      justify-content: center;
+      height: 100px;
+    }
+
+    .container {
+    display: grid;
+    place-items: center; /* 가운데 정렬 */
+    }
+
+    .box {
+      width: 50%; /* 상자의 너비 */
+      background-color: rgb(173, 219, 111, 0.8);
+      color: black;
+      font-weight: bold;
+      font-size: 15px;
+      padding: 10px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .image-container {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        height: 350px; 
+        margin-top: 40px; 
+    }
+
+    .image-container img {
+        height: 100%; 
+        object-fit: contain; 
+    }
+  </style>
+
+<body>
+  <div class="text">
+    <h2>404 <span class="blue-text">ERROR</span></h2>
+    <p>페이지를 찾을 수 없습니다.</p>
+  </div>
+  <div>
+    <h4 class="text2">페이지가 존재하지 않거나, 사용할 수 없는 페이지입니다.</h4>
+  </div>
+
+<div class="container">
+  <div class="box">
+    홈으로 이동하기
+  </div>
+</div>
+
+
+  <div class="image-container">
+    <img src="../source/404error.png" alt="Description of Image">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.box').addEventListener('click', function() {
+          window.location.href = '../templates/main.html';
+      });
+    });
+  </script>
+
+</body>
+</html>
