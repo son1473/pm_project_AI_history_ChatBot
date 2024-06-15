@@ -60,6 +60,11 @@ character_messages = {
     '''
 }
 
+# 404 에러 핸들러
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 # 메인페이지 라우팅
 @app.route('/')
 def index():
@@ -100,7 +105,8 @@ def storytelling():
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get('message')
-    selected_character = session_state.get('selected_character', "kingsejong")  # 기본값은 세종대왕
+    selected_character = session_state.get(
+        'selected_character', "kingsejong")  # 기본값은 세종대왕
 
     initial_content = character_messages.get(selected_character, '''
         저는 초등학생이고 당신은 조선 시대의 세종대왕입니다. 
@@ -122,6 +128,7 @@ def get_response(prompt):
         question=prompt
     )
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
