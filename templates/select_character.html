@@ -16,10 +16,6 @@
       href="https://fonts.googleapis.com/css2?&family=Nanum+Gothic&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      rel="stylesheet"
-    />
     <title>역사 인물 선택</title>
     <style>
       body {
@@ -191,7 +187,6 @@
         /* text-align: center; */
         justify-content: center;
         align-items: center;
-
       }
 
       .owl {
@@ -217,8 +212,21 @@
     <div class="container">
       <div class="header">
         <!-- 백 버튼 -->
-        <button class="btn btn-link text-dark" onclick="goBack()">
-          <i class="fas fa-chevron-left"></i>
+        <button class="btn back" onclick="goBack()">
+          <svg
+            width="10"
+            height="19"
+            viewBox="0 0 10 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.24346 10.3038C-0.0811533 9.96605 -0.0811533 9.42045 0.24346 9.08186L7.94761 1.05925C8.41622 0.570664 9.17865 0.570664 9.64809 1.05925C10.1167 1.54783 10.1167 2.3408 9.64809 2.82938L3.05761 9.69325L9.64809 16.5554C10.1167 17.0448 10.1167 17.8378 9.64809 18.3264C9.17865 18.815 8.41622 18.815 7.94761 18.3264L0.24346 10.3038Z"
+              fill="black"
+            />
+          </svg>
         </button>
       </div>
       <!-- <div class="divider"></div> -->
@@ -262,7 +270,7 @@
       }
 
       function goHome() {
-          window.location.href = "/";
+        window.location.href = "/";
       }
 
       function handleSunduk() {

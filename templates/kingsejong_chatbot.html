@@ -9,10 +9,6 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      rel="stylesheet"
-    />
     <style>
       html,
       body {
@@ -194,7 +190,7 @@
   <body>
     <div class="header">
       <!-- 백 버튼 -->
-      <div class="btn back" onclick="goBack()">
+      <button class="btn back" onclick="goBack()">
         <svg
           width="10"
           height="19"
@@ -209,12 +205,12 @@
             fill="black"
           />
         </svg>
-      </div>
+      </button>
 
       <div class="header_title">
         <h2>세종대왕</h2>
       </div>
-      <div class="btn" onclick="goHome()">
+      <button class="btn" onclick="goHome()">
         <svg
           width="18"
           height="16"
@@ -230,7 +226,7 @@
             fill-opacity="0.8"
           />
         </svg>
-      </div>
+      </button>
     </div>
 
     <div class="divider"></div>
@@ -271,13 +267,13 @@
 
       let xhr;
 
-    function goBack() {
+      function goBack() {
         window.history.back();
-    }
+      }
 
-    function goHome() {
+      function goHome() {
         window.location.href = "/";
-    }
+      }
 
       // Initial greeting message from the bot
       window.onload = function () {
