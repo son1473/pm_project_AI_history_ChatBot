@@ -66,7 +66,7 @@
         /* width: 40%; */
         display: inline;
         margin-top: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 5px;
         padding: 1rem;
         border-radius: 1rem;
         border-top-left-radius: 0px;
@@ -182,68 +182,20 @@
           </svg>
         </div>
       </div>
-
       <div class="divider"></div>
 
       <!-- 채팅방 전체 -->
-      <div class="chat-body" id="chat-body">
-        <!-- 부엉이 npc -->
-        <div class="npc d-none">
-          <!-- npc 메시지 -->
-          <div class="npc-message">
-            <img src="/static/owl.png" height="50px" alt="" />
-            <div class="npc-message-box">
-              <div class="message-sender">역사 천재</div>
-              <div class="message-text">
-                안녕! 난 너에게 이야기를 해줄 부엉이 선생님이야! 어떤 인물의
-                이야기를 듣고 싶어?
-              </div>
-            </div>
-          </div>
-          <!-- npc 채팅 옵션 -->
-          <div class="npc-options rounded">
-            <div
-              class="btn npc-option"
-              onclick="selectOptionByUser('선덕여왕'); whatdoyouwanttoknow('선덕여왕');"
-            >
-              선덕여왕
-            </div>
-            <div
-              class="btn npc-option"
-              onclick="selectOptionByUser('세종대왕'); whatdoyouwanttoknow('세종대왕');"
-            >
-              세종대왕
-            </div>
-            <div
-              class="btn npc-option"
-              onclick="selectOptionByUser('안중근'); whatdoyouwanttoknow('안중근');"
-            >
-              안중근
-            </div>
-          </div>
-        </div>
-        <!-- 옵션 클릭 사용자 메시지 -->
-        <div class="sent-message">
-          <img src="" alt="" />
-          <div class="sent-message-box d-none">
-            <div class="message-text"></div>
-          </div>
-        </div>
+      <div class="chat-body" id="chat-body" style="padding-bottom: 300px">
+        <!-- 이 안에 채팅 내용 채워질 예정  -->
       </div>
-      <!-- <div class="chat-footer">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Type a message">
-                <button class="btn btn-primary" type="button">Send</button>
-            </div>
-        </div> -->
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
       const chatBody = document.getElementById("chat-body");
 
+      // 라우팅시, 동작될 코드
       window.onload = function () {
-        showAllPeople();
+        selectHistoryPerson();
       };
 
       function goBack() {
@@ -254,7 +206,7 @@
         window.location.href = "/";
       }
       // 기본 정보
-      let sejongInfo = `
+      const sejongInfo = `
       아주 오랜 옛날, 조선이라는 나라가 있었어요. 
         그 나라에는 세종대왕이라는 훌륭한 왕이 있었어요. 
         세종대왕은 1397년 4월 10일에 태어났어요. 
@@ -275,7 +227,7 @@
         세종대왕은 정말 위대한 왕이었어요. 
         그는 1450년에 54세의 나이로 세상을 떠났지만, 그의 업적은 오늘날까지도 기억되고 있어요.
       `;
-      let sundukInfo = `
+      const sundukInfo = `
       옛날 옛적, 신라라는 나라에 선덕여왕이라는 멋진 여왕이 있었어요. 
         본명은 김덕만이었고, 아버지는 진평왕, 어머니는 마야부인이었지요. 
         그런데 아버지가 아들이 없이 돌아가시자, 신라의 중요한 회의에서 김덕만을 여왕으로 뽑았어요. 
@@ -287,7 +239,7 @@
         선덕여왕은 16년 동안 왕으로 다스리다가 647년에 돌아가셨습니다. 
       
       `;
-      let ahnInfo = `
+      const ahnInfo = `
       안중근 의사는 1879년 9월 2일, 지금의 황해도 해주에서 태어났어요. 
                 어릴 때부터 그는 책 읽기를 좋아하고, 공부도 열심히 했어요. 
                 그의 아버지는 지역에서 존경받는 인물이었고, 안중근에게 나라를 사랑하는 마음을 심어주었어요. 
@@ -307,19 +259,19 @@
       `;
 
       // 업적 정보
-      sejong_job_list = [
+      const sejong_job_list = [
         "평화로운 유교 정치",
         "책을 만드는 집현전",
         "훈민정음, 한글의 탄생",
         "눈부신 과학기술의 발전",
         "음악, 아악",
       ];
-      sunduk_job_list = [
+      const sunduk_job_list = [
         "백성들을 위한 따뜻한 마음",
         "나라를 지키는 상징, 구층목탑",
         "위기와 죽음",
       ];
-      ahn_job_list = [
+      const ahn_job_list = [
         "독립을 위한 망명과 활동",
         "일본의 압박과 을사늑약",
         "항일 의병 투쟁",
@@ -327,7 +279,7 @@
         "의연한 재판과 순국",
       ];
       // 업적 답변
-      sejong_job_answer = {
+      const sejong_job_answer = {
         "평화로운 유교 정치":
           "세종대왕은 유교적 이념을 바탕으로 중앙집권적 통치체제를 강화하고, 백성을 위한 정치와 사회 제도를 개선하였습니다. 특히, 경국대전의 초안을 작성하여 법제도를 정비하고 유교 교육을 강화하였습니다.",
         "책을 만드는 집현전":
@@ -339,7 +291,7 @@
         "음악, 아악":
           "세종대왕은 음악에도 깊은 관심을 가지고 새로운 악기와 악곡을 창작하였습니다. 특히, 아악을 정비하고 궁중음악을 체계화하여 음악 문화의 발전에 크게 기여하였습니다.",
       };
-      sunduk_job_answer = {
+      const sunduk_job_answer = {
         "백성들을 위한 따뜻한 마음":
           "선덕여왕은 백성들을 위한 여러 가지 정책을 펼치며 따뜻한 마음으로 다스렸습니다.",
         "나라를 지키는 상징, 구층목탑":
@@ -347,7 +299,7 @@
         "위기와 죽음":
           "선덕여왕은 재위 기간 동안 여러 가지 위기와 어려움을 겪었으며, 결국 647년에 세상을 떠났습니다.",
       };
-      ahn_job_answer = {
+      const ahn_job_answer = {
         "독립을 위한 망명과 활동":
           "안중근은 독립을 위해 망명하여 여러 활동을 펼쳤습니다.",
         "일본의 압박과 을사늑약":
@@ -360,23 +312,23 @@
           "안중근은 일본 법정에서 의연하게 자신의 뜻을 밝히고 1910년 순국하였습니다.",
       };
       // 스토리 정보
-      sejong_story_list = [
+      const sejong_story_list = [
         "초정 약수 이야기",
         "고기를 좋아하는 세종",
         "한글 창제",
       ];
-      sunduk_story_list = [
+      const sunduk_story_list = [
         "향기 없는 꽃의 비밀",
         "개구리들의 비밀 신호",
         "마지막 예언",
       ];
-      ahn_story_list = [
+      const ahn_story_list = [
         "손가락의 단지",
         "하얼빈에서의 준비",
         "감옥에서의 교육 활동",
       ];
       // 스토리 답변
-      sejong_story_answer = {
+      const sejong_story_answer = {
         "초정 약수 이야기":
           "세종대왕은 건강이 좋지 않았을 때 초정 약수를 마시며 요양을 하였고, 이 약수는 세종대왕의 병을 호전시키는 데 큰 역할을 했다고 전해집니다.",
         "고기를 좋아하는 세종":
@@ -384,7 +336,7 @@
         "한글 창제":
           "세종대왕은 백성들이 쉽게 읽고 쓸 수 있는 한글, 즉 훈민정음을 창제하였습니다. 이는 한국 역사상 가장 중요한 문화적 업적으로 평가되며, 오늘날까지도 사용되고 있는 한국어의 기초가 되었습니다.",
       };
-      sunduk_story_answer = {
+      const sunduk_story_answer = {
         "향기 없는 꽃의 비밀":
           "선덕여왕은 향기 없는 꽃을 보고 자신의 운명을 예견했다고 전해집니다.",
         "개구리들의 비밀 신호":
@@ -392,7 +344,7 @@
         "마지막 예언":
           "선덕여왕은 죽기 전, 자신의 무덤 자리를 예언하며 그곳에 묻히기를 원했다고 합니다.",
       };
-      ahn_story_answer = {
+      const ahn_story_answer = {
         "손가락의 단지":
           "안중근은 동지들과 함께 독립을 맹세하며 손가락을 자르는 결의를 하였습니다.",
         "하얼빈에서의 준비":
@@ -434,7 +386,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
+                <div class="npc-options npc-options-vertical">
                     <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
@@ -470,7 +422,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
+                <div class="npc-options npc-options-vertical">
                     <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
@@ -480,7 +432,7 @@
                     <div class="btn npc-option" onclick="selectOptionByUser('재밌는 이야기 알려줘'); funstory('${character}');">
                         재밌는 이야기 알려줘
                     </div>
-                    <div class="btn npc-option" style="background-color: #FFD464" onclick="showAllPeople()";">
+                    <div class="btn npc-option" style="background-color: #FFD464" onclick="selectHistoryPerson()";">
                         다른 인물의 이야기 듣기
                     </div>
                     
@@ -566,7 +518,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
+                <div class="npc-options npc-options-vertical">
                     ${htmlString}
                 </div>
             </div>
@@ -655,7 +607,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
+                <div class="npc-options npc-options-vertical">
                     ${htmlString}
                 </div>
             </div>
@@ -722,7 +674,7 @@
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
+                <div class="npc-options">
                     
                     <div class="btn npc-option" onclick="selectOptionByUser('유교정치')">
                         더 알고 싶어
@@ -743,7 +695,7 @@
         displayText(message, text, 0);
       }
 
-      function showAllPeople() {
+      function selectHistoryPerson() {
         let newMessage = document.createElement("div");
         newMessage.className = "npc";
         newMessage.innerHTML = `
@@ -757,7 +709,7 @@
                         </div>
                     </div>
                     <!-- npc 채팅 옵션 -->
-                    <div class="npc-options rounded">
+                    <div class="npc-options">
                         <div class="btn npc-option" onclick="selectOptionByUser('선덕여왕'); whatdoyouwanttoknow('선덕여왕');">
                             선덕여왕
                         </div>
@@ -789,18 +741,31 @@
         displayText(message, text, 0);
       }
 
+      let isUserAtBottom = true; // 초기에 스크롤이 맨 밑에 있다고 가정
+
+      // 사용자가 스크롤을 이동했는지 여부를 감지
+      chatBody.addEventListener("scroll", () => {
+        isUserAtBottom =
+          chatBody.scrollHeight - chatBody.scrollTop === chatBody.clientHeight;
+      });
+
       // ChatGPT처럼 한 글자씩 출력하도록...
       function displayText(contentDiv, text, index, callback, character) {
         if (index < text.length) {
           contentDiv.textContent += text[index];
-          chatBody.scrollTop = chatBody.scrollHeight;
-          console.log(chatBody.scrollHeight);
+          if (isUserAtBottom) {
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }
+          // chatBody.scrollTop = chatBody.scrollHeight;
           setTimeout(function () {
             displayText(contentDiv, text, index + 1, callback, character);
           }, 30);
           // 30milli sec
         } else {
-          chatBody.scrollTop = chatBody.scrollHeight;
+          if (isUserAtBottom) {
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }
+          // chatBody.scrollTop = chatBody.scrollHeight;
           // 1초 후 물어보기 실행
           if (callback) {
             setTimeout(function () {
