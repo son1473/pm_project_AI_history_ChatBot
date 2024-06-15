@@ -89,8 +89,11 @@
         border-radius: 15px;
         text-align: center;
         margin-top: 10px;
+        transition: transform 0.3s ease, color 0.3s ease;
       }
-      .box:active {
+      .box:active,
+      .box2:active {
+        color: #222222;
         transform: scale(1.05);
         box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
       }
@@ -108,12 +111,9 @@
         border-radius: 15px;
         text-align: center;
         margin-top: 20px;
+        transition: transform 0.3s ease, color 0.3s ease;
       }
 
-      .box2:active {
-        transform: scale(1.05);
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
-      }
       .background {
         /* width: 360px; 상자의 너비 */
         /* height: 182px; 상자의 높이 */

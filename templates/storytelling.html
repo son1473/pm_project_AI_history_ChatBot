@@ -83,6 +83,7 @@
       /* 채팅 내용 */
       .npc-message-box .message-text {
         margin-top: 0.5rem;
+        font-size: 18px;
       }
 
       /* 스토리텔링 옵션 */
@@ -110,10 +111,14 @@
         background-color: rgba(255, 226, 90, 0.5);
         color: black;
         border-radius: 10px;
+        transition: transform 0.3s ease;
+        /* transition: background-color 0.4s ease; */
       }
 
       .npc-option:active {
-        transform: scale(1.1);
+        font-weight: 600;
+        font-size: 17px;
+        transform: scale(1.08);
         background-color: rgba(255, 226, 90, 0.8);
         box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
       }
