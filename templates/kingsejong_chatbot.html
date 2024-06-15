@@ -168,23 +168,62 @@
         .progress-bar {
             background-color: #66b992;
         }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            margin: 0.5rem 0;
+        }
+
     </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&family=Song+Myung&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="header">
-    <button class="btn btn-link text-dark" onclick="history.back()">
-        <i class="fas fa-chevron-left"></i> 
-    </button>
-    <div class="header_title">
+    <div class="header">
+        <!-- 백 버튼 -->
+        <div class="btn back" onclick="goBack()">
+          <svg
+            width="10"
+            height="19"
+            viewBox="0 0 10 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.24346 10.3038C-0.0811533 9.96605 -0.0811533 9.42045 0.24346 9.08186L7.94761 1.05925C8.41622 0.570664 9.17865 0.570664 9.64809 1.05925C10.1167 1.54783 10.1167 2.3408 9.64809 2.82938L3.05761 9.69325L9.64809 16.5554C10.1167 17.0448 10.1167 17.8378 9.64809 18.3264C9.17865 18.815 8.41622 18.815 7.94761 18.3264L0.24346 10.3038Z"
+              fill="black"
+            />
+          </svg>
+        </div>
+        
+      <div class="header_title">
         <h2>세종대왕</h2>
+      </div>
+      <div class="btn" onclick="goHome()">
+        <svg
+          width="18"
+          height="16"
+          viewBox="0 0 18 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M9 0L18 8.85371L17.1818 9.65859L15.9425 8.43942V14.8618L15.9425 16H2.0575V14.8618V14.8617V8.43942L0.818182 9.65859L0 8.85371L8.18182 0.804881L9 0ZM9 1.60976L14.7854 7.30114V14.8617H11.3142V10.3087H10.1571V14.8617H7.84292V10.3087H6.68583V14.8617H3.21458V7.30114L9 1.60976ZM11.3142 9.17037H6.68583V10.3087H11.3142V9.17037Z"
+            fill="black"
+            fill-opacity="0.8"
+          />
+        </svg>
+      </div>
     </div>
-    <button class="btn btn-link text-dark" onclick="location.href='/'">
-        <i class="fas fa-home"></i>
-    </button>
-</div>
+
+<div class="divider"></div>
 
 <div class="container chat-container">
     <div class="chatBox" id="chatBox">
@@ -309,6 +348,14 @@
                 displayText(contentDiv, text, index + 1);
             }, 30);
         }
+    }
+
+    function goBack() {
+        window.history.back();
+     }
+
+    function goHome() {
+        window.location.href = "/";
     }
 </script>
 
