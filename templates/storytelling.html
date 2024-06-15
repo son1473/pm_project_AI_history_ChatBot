@@ -435,7 +435,7 @@
                 </div>
                 <!-- npc 채팅 옵션 -->
                 <div class="npc-options rounded npc-options-vertical">
-                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow2('${character}');">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
                     <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
@@ -471,7 +471,7 @@
                 </div>
                 <!-- npc 채팅 옵션 -->
                 <div class="npc-options rounded npc-options-vertical">
-                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow('${character}');">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
                     <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
@@ -529,7 +529,7 @@
         let message = newMessage.querySelector(".message-text");
         let text = `${info}`;
 
-        displayText(message, text, 0);
+        displayText(message, text, 0, whatdoyouwanttoknow2, character);
       }
 
       // 무슨 업적 - 옵션 제공
@@ -548,7 +548,7 @@
         for (let job of job_list) {
           htmlString += `
                 <div class="btn npc-option" 
-                onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}'); whatdoyouwanttoknow2('${character}');">
+                onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
                     ${job}
                 </div>
                 `;
@@ -582,7 +582,7 @@
       }
 
       // 업적 답변
-      function jobInfo(job, character) {
+      async function jobInfo(job, character) {
         let job_list = [];
         let job_answer = [];
 
@@ -617,7 +617,8 @@
         let message = newMessage.querySelector(".message-text");
         let text = `${job_answer[`${job}`]}`;
 
-        displayText(message, text, 0);
+        displayText(message, text, 0, whatdoyouwanttoknow2, character);
+        // whatdoyouwanttoknow2('${character}');
       }
 
       // 재밌는 이야기 알려줘 - 옵션 제공
@@ -636,7 +637,7 @@
 
         for (let story of story_list) {
           htmlString += `
-                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}'); whatdoyouwanttoknow2('${character}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
                     ${story}
                 </div>
                 `;
@@ -684,15 +685,6 @@
           story_list = ahn_story_list;
           story_answer = ahn_story_answer;
         }
-        // let htmlString = "";
-
-        // for (let story in story_list) {
-        //     htmlString += `
-        //     <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}');">
-        //         ${story}
-        //     </div>
-        //     `
-        // }
 
         let newMessage = document.createElement("div");
         newMessage.className = "npc";
@@ -714,7 +706,7 @@
         let message = newMessage.querySelector(".message-text");
         let text = `${story_answer[`${story}`]}`;
 
-        displayText(message, text, 0);
+        displayText(message, text, 0, whatdoyouwanttoknow2, character);
       }
 
       function knowmore(character) {
@@ -798,16 +790,23 @@
       }
 
       // ChatGPT처럼 한 글자씩 출력하도록...
-      function displayText(contentDiv, text, index) {
+      function displayText(contentDiv, text, index, callback, character) {
         if (index < text.length) {
           contentDiv.textContent += text[index];
           chatBody.scrollTop = chatBody.scrollHeight;
+          console.log(chatBody.scrollHeight);
           setTimeout(function () {
-            displayText(contentDiv, text, index + 1);
+            displayText(contentDiv, text, index + 1, callback, character);
           }, 30);
           // 30milli sec
         } else {
           chatBody.scrollTop = chatBody.scrollHeight;
+          // 1초 후 물어보기 실행
+          if (callback) {
+            setTimeout(function () {
+              callback(character);
+            }, 1000);
+          }
         }
       }
     </script>
