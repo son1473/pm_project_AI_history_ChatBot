@@ -17,17 +17,22 @@
         overflow-x: hidden;
       }
       .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         padding: 1rem;
         background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
       }
       .header .header_title {
         flex: 1;
         text-align: center; /* 텍스트 중앙 정렬 */
         font-family: "Song Myung", serif;
       }
+
+      .header_title h2 {
+        margin: 0;
+      }
+
       .chat-container {
         display: flex;
         flex-direction: column;
