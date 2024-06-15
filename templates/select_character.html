@@ -9,6 +9,7 @@
       body {
         margin: 0;
       }
+
       .container {
         display: flex;
         flex-direction: column;
@@ -17,41 +18,8 @@
 
       .back-button {
         font-size: 40px;
-        /* 폰트 크기를 28px로 설정 */
         cursor: pointer;
         font-weight: bold;
-        /* 폰트 굵기를 굵게 설정 */
-      }
-
-      .box {
-        width: 80%;
-        /* 상자의 너비 */
-        /* height: 0%px;
-            상자의 높이 */
-        background-color: rgb(255, 221, 139);
-        /* 상자의 배경색 */
-        /* padding: 10px; */
-        /* 상자 내부 여백 */
-        display: flex;
-        /* 플렉스 박스 사용 */
-        justify-content: space-around;
-        /* 수평 중앙 정렬 */
-        align-items: center;
-        /* 수직 중앙 정렬 */
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
-        height: 10vh;
-        border-radius: 15px;
-        /* 상자의 모서리를 둥글게 */
-        font-weight: bold;
-        font-size: 1rem;
-      }
-
-      .options {
-        display: flex;
-        justify-content: space-around;
-        padding: 20px 0;
-        background-color: #ffffff;
       }
 
       .body {
@@ -64,6 +32,20 @@
         font-weight: bolder;
       }
 
+      /* 어떤 인물과 대화하고 싶어? 박스 */
+      .box {
+        width: 80%;
+        background-color: rgb(255, 221, 139);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        height: 10vh;
+        border-radius: 15px;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+
       .img {
         display: flex;
         justify-content: center;
@@ -74,15 +56,12 @@
       .sunduk {
         width: 130px;
         height: 200px;
-        /* max-width: calc(100% - 100px); 최대 너비 설정 */
-        /* z-index: 10; 겹쳐진 이미지가 앞에 나타나도록 z-index 설정 */
+        /* max-width: calc(100% - 100px); */
+        /* z-index: 10; */
         border-radius: 10px;
-        /* 원하는 경우 이미지 모서리를 둥글게 만듦 */
         background-image: url("/static/sundukbackground.png");
         background-size: 130px 198px;
-        /* 배경 이미지를 요소에 맞추어 확대/축소 */
         background-position: center;
-        /* 배경 이미지를 가운데 정렬 */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -99,11 +78,8 @@
         width: 130px;
         height: 200px;
         max-width: calc(100% - 100px);
-        /* 최대 너비 설정 */
-        /* z-index: 10; */
-        /* 겹쳐진 이미지가 앞에 나타나도록 z-index 설정 */
+
         border-radius: 10px;
-        /* 원하는 경우 이미지 모서리를 둥글게 만듦 */
         background-image: url("/static/sejongbackground.png");
         background-size: 130px 199px;
         background-position: center;
@@ -123,11 +99,8 @@
         width: 130px;
         height: 200px;
         max-width: calc(100% - 100px);
-        /* 최대 너비 설정 */
         /* z-index: 10; */
-        /* 겹쳐진 이미지가 앞에 나타나도록 z-index 설정 */
         border-radius: 10px;
-        /* 원하는 경우 이미지 모서리를 둥글게 만듦 */
         background-image: url("/static/annbackground.png");
         background-size: 130px 198px;
         background-position: center;
@@ -143,86 +116,44 @@
         margin: 5px;
       }
 
-      .option span {
-        display: block;
-        margin-top: 10px;
-        font-size: 1rem;
-        font-weight: bold;
-        /* 기본 폰트 굵기 */
+      /* .transparent-box {
+            width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      box-sizing: border-box;
       }
 
-      /* /* .transparent-box {
-            width: 100%;
-            /* 박스의 너비를 설정합니다. */
-      /* max-width: 600px; */
-      /* 최대 너비를 설정합니다. */
-      /* margin: 20px auto; */
-      /* 가운데 정렬을 위한 마진 설정 */
-      /* padding: 20px; */
-      /* 안쪽 여백을 설정합니다. */
-      /* background-color: rgba(255, 255, 255, 0.7); */
-      /* 투명한 배경색을 설정합니다. */
-      /* box-sizing: border-box; */
-
-      /* .transparent-box p {
-            /* font-size: 19px;
-            line-height: 1.6;
-            color: #333;
-            /* 텍스트 색상을 설정합니다. */
+      .transparent-box p {
+        font-size: 19px;
+        line-height: 1.6;
+        color: #333;
+      } */
 
       .footer {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        /* text-align: center; */
+        justify-content: center;
         align-items: center;
-        margin: 0 auto;
-        /* 텍스트와 이미지를 가운데 정렬 */
-        /* Footer의 높이를 150px로 설정 */
-        /* position: relative; */
       }
 
       .owl {
         width: 200px;
         height: auto;
-        /* margin-left: 200px; */
-        /* margin-bottom: 0px; */
         align-items: center;
-        /* z-index: 2; */
-        /* background-image: url("/static/flower.png");
-            background-size: auto;
-            background-position:bottom;
-            display: flex; */
-
-        /* display: block; */
-        /* z-index: 1; */
-        /* 절대 위치로 설정하여 부모 요소에 맞게 배치 */
-        /* bottom: 50px; */
-        /* 부모 요소의 아래쪽에서 10px 위로 배치 */
-        /* left: 50%; */
-        /* 부모 요소의 왼쪽에서 50% 지점에 배치 */
-        /* transform: translateX(-50%); */
-        /* 가로축에서 중앙으로 이동 */
-        position: absolute;
-        top: 20px;
+        z-index: 2;
+        margin-bottom: -70px;
       }
 
       .flower {
         width: 100%;
-        height: 120px;
-        /* height: auto; */
-        /* background-image: url("/static/flower.png"); */
         background-size: cover;
         background-position: center;
-        z-index: 1;
-        margin-top: -10%;
-        /* pointer-events: none; */
-        /* padding-bottom: 25rem; */
-        /* 부모 요소의 아래쪽에 배치 */
+        /* z-index: 1; */
+        /* margin-top: -70px; */
         justify-content: space-around;
-        /* 수평 중앙 정렬 */
-      }
-
-      .positionDiv {
-        width: 100%;
-        height: 191px;
       }
     </style>
   </head>
@@ -230,16 +161,15 @@
   <body>
     <div class="container">
       <div class="header">
+        <!-- 백 버튼은 수정 예정 -->
         <div class="back-button">&lt;</div>
       </div>
       <div class="body">
         <div class="box">
           <div class="question">어떤 인물과 이야기하고 싶어?</div>
         </div>
-
         <div class="img">
-          <div class="sunduk">
-            <!-- <div class="option1"> -->
+          <div class="sunduk" onclick="handleSunduk();">
             <img
               src="\static\sundukmain.png"
               alt="선덕여왕"
@@ -247,7 +177,7 @@
             />
             <span>선덕여왕</span>
           </div>
-          <div class="sejong">
+          <div class="sejong" onclick="handleSejong();">
             <img
               src="\static\sejongmain.png"
               alt="세종대왕"
@@ -255,7 +185,7 @@
             />
             <span>세종대왕</span>
           </div>
-          <div class="ann">
+          <div class="ann" onclick="handleAnn();">
             <img src="\static\annmain.png" alt="안중근 의사" class="annmain" />
             <span>안중근 의사</span>
           </div>
@@ -265,32 +195,19 @@
       </div>
       <div class="footer">
         <img src="\static\owl.png" alt="올빼미 선생님" class="owl" />
-        <div class="positionDiv" style="width: 100%; height: 191px"></div>
         <img src="\static\flower.png" alt="잔디" class="flower" />
       </div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        document
-          .querySelector(".back-button")
-          .addEventListener("click", function () {
-            window.location.href = "/";
-          });
-
-        document
-          .querySelector(".sunduk")
-          .addEventListener("click", function () {
-            window.location.href = "/sunduk";
-          });
-        document
-          .querySelector(".sejong")
-          .addEventListener("click", function () {
-            window.location.href = "/sejong";
-          });
-        document.querySelector(".ann").addEventListener("click", function () {
-          window.location.href = "/ahnjunggeun";
-        });
-      });
+      function handleSunduk() {
+        window.location.href = "/sunduk";
+      }
+      function handleSejong() {
+        window.location.href = "/sejong";
+      }
+      function handleAnn() {
+        window.location.href = "/ahnjunggeun";
+      }
     </script>
   </body>
 </html>
