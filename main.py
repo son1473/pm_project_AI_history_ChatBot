@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify, render_template
 from langchain.chains import AnalyzeDocumentChain
 from langchain.chains.question_answering import load_qa_chain
-from langchain.chat_models import ChatOpenAI
+# from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
+
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -21,7 +23,7 @@ file_paths = {
     "ahnjunggeun": './data/ahnjunggeun.txt'
 }
 
-# Flask 애플리케이션 초기화
+# Flask 애플리케이션 인스턴스 초기화 및 생성
 app = Flask(__name__)
 
 # 텍스트 파일 읽기
@@ -30,8 +32,10 @@ for character, file_path in file_paths.items():
     with open(file_path, 'r', encoding='utf-8') as file:
         raw_texts[character] = file.read()
 
+
 # ChatGPT 모델 설정
-model = ChatOpenAI(model="gpt-3.5-turbo")  # 또는 원하는 모델 선택
+# model = ChatOpenAI(model="gpt-3.5-turbo")  # 또는 원하는 모델 선택
+model = ChatOpenAI(model="gpt-4")  # 또는 원하는 모델 선택
 qa_chain = load_qa_chain(model, chain_type="map_reduce")
 qa_document_chain = AnalyzeDocumentChain(combine_docs_chain=qa_chain)
 
