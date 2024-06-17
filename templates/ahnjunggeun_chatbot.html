@@ -1,295 +1,374 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
     <title>Chat UI</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 10vh; /* 높이를 10vh로 조정 */
-            padding: 0 20px; /* 양쪽에 여백 추가 */
-        }
-        .header .header_title {
-            flex: 1;
-            text-align: center; /* 텍스트 중앙 정렬 */
-            font-family: 'Dokdo', sans-serif;
-        }
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 90vh; /* 채팅 상자의 높이도 조정하여 전체가 100vh가 되도록 */
-            overflow-x: hidden; /* 가로 스크롤바 숨김 */
-        }
-        .chatBox {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        .chatBox .message {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            position: relative; /* 상대적 위치 설정 */
-            font-family: "Noto Sans KR", sans-serif;
-        }
-        .chatBox .message.bot {
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-        .chatBox .message.user {
-            justify-content: flex-end;
-        }
-        .chatBox .message.bot .profile-img {
-            border-radius: 30%;
-            width: 45px;
-            height: 60px;
-            margin-right: 10px;
-        }
-        .chatBox .message .content {
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-        }
-        .chatBox .message.bot .content {
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 15px;
-            background-color: #EAF7D9;
-        }
-        .chatBox .message.user .content {
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 15px;
-            background-color: #B8EA76;
-            color: black;
-        }
-        .chatBox .message img {
-            border-radius: 30%;
-            width: 45px;
-            height: 60px;
-            margin-right: 10px;
-        }
-        .chatBox .message .message-content {
-            display: flex;
-            align-items: flex-start; /* 왼쪽 상단 정렬 */
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 15px;
-            background-color: #EAF7D9; /* 말풍선 배경색 */
-        }
-        .chatBox .message.bot .message-content {
-            justify-content: flex-start;
-        }
-        .chatBox .message.user .message-content {
-            justify-content: flex-end;
-        }
-        .userInput {
-            margin-bottom: 10px;
-            display: flex;
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 5px;
-        }
-        .userInput input {
-            flex: 1;
-            border: none;
-            border-radius: 0;
-        }
-        .userInput button {
-            margin-left: 10px;
-            position: relative;
-        }
-        .btn-primary {
-            background-color: #66b992;
-            border-color: #66b992;
-        }
-        .btn-primary:hover, .btn-primary:focus {
-            background-color: #338962;
-            border-color: #338962;
-        }
-        /* 로딩 스피너 애니메이션 */
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            50% {
-                transform: rotate(180deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem; /* 양쪽에 여백 추가 */
+      }
+      .header .header_title {
+        flex: 1;
+        text-align: center; /* 텍스트 중앙 정렬 */
+        font-family: "Dokdo", sans-serif;
+      }
 
-        .fa-spinner {
-            animation: rotate 5s ease 0s infinite alternate;
-        }
+      .header_title h2 {
+        margin: 0;
+      }
 
-        .loadingDiv {
-            display: flex;
-            width: 65%;
-            background-color: #EAF7D9;
-            border-radius: 10px;
-            padding: 10px;
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 90vh; /* 채팅 상자의 높이도 조정하여 전체가 100vh가 되도록 */
+        overflow-x: hidden; /* 가로 스크롤바 숨김 */
+      }
+      .chatBox {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .chatBox .message {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        position: relative; /* 상대적 위치 설정 */
+        font-family: "Noto Sans KR", sans-serif;
+      }
+      .chatBox .message.bot {
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+      .chatBox .message.user {
+        justify-content: flex-end;
+      }
+      .chatBox .message.bot .profile-img {
+        border-radius: 30%;
+        width: 45px;
+        height: 60px;
+        margin-right: 10px;
+      }
+      .chatBox .message .content {
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+      }
+      .chatBox .message.bot .content {
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 15px;
+        background-color: #eaf7d9;
+      }
+      .chatBox .message.user .content {
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 15px;
+        background-color: #b8ea76;
+        color: black;
+      }
+      .chatBox .message img {
+        border-radius: 30%;
+        width: 45px;
+        height: 60px;
+        margin-right: 10px;
+      }
+      .chatBox .message .message-content {
+        display: flex;
+        align-items: flex-start; /* 왼쪽 상단 정렬 */
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 15px;
+        background-color: #eaf7d9; /* 말풍선 배경색 */
+      }
+      .chatBox .message.bot .message-content {
+        justify-content: flex-start;
+      }
+      .chatBox .message.user .message-content {
+        justify-content: flex-end;
+      }
+      .userInput {
+        margin-bottom: 10px;
+        display: flex;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px;
+      }
+      .userInput input {
+        flex: 1;
+        border: none;
+        border-radius: 0;
+      }
+      .userInput button {
+        margin-left: 10px;
+        position: relative;
+      }
+      .btn-primary {
+        background-color: #66b992;
+        border-color: #66b992;
+      }
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: #338962;
+        border-color: #338962;
+      }
+      /* 로딩 스피너 애니메이션 */
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
         }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
 
-        .loadingDiv > .loadingImg {
-            background-image: url('/static/loading.svg');
-            width: 30px;
-            height: 30px;
-            background-size: contain;
-            animation: rotate 5s linear 0s infinite alternate;
-        }
+      .fa-spinner {
+        animation: rotate 5s ease 0s infinite alternate;
+      }
 
-        /* 진행 표시기 스타일 */
-        .progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            margin: 0;
-            display: none;
-        }
-        .progress-bar {
-            background-color: #66b992;
-        }
+      .loadingDiv {
+        display: flex;
+        width: 65%;
+        background-color: #eaf7d9;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .loadingDiv > .loadingImg {
+        background-image: url("/static/loading.svg");
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        animation: rotate 5s linear 0s infinite alternate;
+      }
+
+      /* 진행 표시기 스타일 */
+      .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        margin: 0;
+        display: none;
+      }
+      .progress-bar {
+        background-color: #66b992;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        margin: 0.5rem 0;
+      }
     </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
-</head>
-<body>
-<div class="header">
-    <button class="btn btn-link text-dark" onclick="history.back()">
-        <i class="fas fa-chevron-left"></i> 
-    </button>
-    <div class="header_title">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <!-- 백 버튼 -->
+      <button class="btn back" onclick="goBack()">
+        <svg
+          width="10"
+          height="19"
+          viewBox="0 0 10 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0.24346 10.3038C-0.0811533 9.96605 -0.0811533 9.42045 0.24346 9.08186L7.94761 1.05925C8.41622 0.570664 9.17865 0.570664 9.64809 1.05925C10.1167 1.54783 10.1167 2.3408 9.64809 2.82938L3.05761 9.69325L9.64809 16.5554C10.1167 17.0448 10.1167 17.8378 9.64809 18.3264C9.17865 18.815 8.41622 18.815 7.94761 18.3264L0.24346 10.3038Z"
+            fill="black"
+          />
+        </svg>
+      </button>
+
+      <div class="header_title">
         <h2>안중근</h2>
+      </div>
+      <button class="btn" onclick="goHome()">
+        <svg
+          width="18"
+          height="16"
+          viewBox="0 0 18 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M9 0L18 8.85371L17.1818 9.65859L15.9425 8.43942V14.8618L15.9425 16H2.0575V14.8618V14.8617V8.43942L0.818182 9.65859L0 8.85371L8.18182 0.804881L9 0ZM9 1.60976L14.7854 7.30114V14.8617H11.3142V10.3087H10.1571V14.8617H7.84292V10.3087H6.68583V14.8617H3.21458V7.30114L9 1.60976ZM11.3142 9.17037H6.68583V10.3087H11.3142V9.17037Z"
+            fill="black"
+            fill-opacity="0.8"
+          />
+        </svg>
+      </button>
     </div>
-    <button class="btn btn-link text-dark" onclick="location.href='/'">
-        <i class="fas fa-home"></i>
-    </button>
-</div>
 
-<div class="container chat-container">
-    <div class="chatBox" id="chatBox">
+    <div class="divider"></div>
+
+    <div class="container chat-container">
+      <div class="chatBox" id="chatBox">
         <!-- Initial bot greeting will be inserted here -->
-    </div>
-    <div class="userInput" id="userInput">
-        <input type="text" id="message" class="form-control" placeholder="질문을 입력해주세요...">
-        <button class="btn btn-primary text-white" onclick="sendMessage()" id="sendBtn">
-            <i class="fas fa-paper-plane"></i>
-            <div class="progress" id="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
-            </div>
+      </div>
+      <div class="userInput" id="userInput">
+        <input
+          type="text"
+          id="message"
+          class="form-control"
+          placeholder="질문을 입력해주세요..."
+        />
+        <button
+          class="btn btn-primary text-white"
+          onclick="sendMessage()"
+          id="sendBtn"
+        >
+          <i class="fas fa-paper-plane"></i>
+          <div class="progress" id="progress">
+            <div
+              class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              style="width: 100%"
+            ></div>
+          </div>
         </button>
+      </div>
     </div>
-</div>
 
-<script>
-    const messageInput = document.getElementById("message");
-    const chatBox = document.getElementById('chatBox');
-    const sendBtn = document.getElementById("sendBtn");
-    const progress = document.getElementById("progress");
+    <script>
+      const messageInput = document.getElementById("message");
+      const chatBox = document.getElementById("chatBox");
+      const sendBtn = document.getElementById("sendBtn");
+      const progress = document.getElementById("progress");
 
-    let xhr;
+      let xhr;
 
-    // Initial greeting message from the bot
-    window.onload = function() {
-        var initialMessage = "안녕하세요! 질문을 입력해주세요.";
+      function goBack() {
+        window.history.back();
+      }
+
+      function goHome() {
+        window.location.href = "/";
+      }
+
+      // Initial greeting message from the bot
+      window.onload = function () {
+        var initialMessage = "나한테 궁금한 것이 있다고 들었어. 편히 물어보렴.";
         displayBotMessage(initialMessage);
-    };
+      };
 
-    messageInput.addEventListener("keyup", (e) => {
+      messageInput.addEventListener("keyup", e => {
         if (e.keyCode === 13) {
-            sendMessage();
+          sendMessage();
         }
-    });
+      });
 
-    function sendMessage() {
+      function sendMessage() {
         if (sendBtn.classList.contains("loading")) {
-            xhr.abort();
+          xhr.abort();
         }
 
         let message = messageInput.value;
         if (!message.trim()) return;
 
-        var userMessage = document.createElement('div');
+        var userMessage = document.createElement("div");
         userMessage.classList.add("message", "user");
         userMessage.innerHTML = `<div class="content">${message}</div>`;
         chatBox.appendChild(userMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
-        messageInput.value = '';
+        messageInput.value = "";
 
         progress.style.display = "block";
         sendBtn.classList.add("loading");
 
         // Simulate a delay to demonstrate loading
         setTimeout(() => {
-            xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if(xhr.readyState === XMLHttpRequest.OPENED) {
-                    console.log("답변 가져오기를 기다리는 중");
-                    messageInput.disabled = true;
-                    messageInput.value = "안중근님이 입력중입니다...";
-                    sendBtn.innerHTML = '<i class="far fa-square"></i>';
+          xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.OPENED) {
+              console.log("답변 가져오기를 기다리는 중");
+              messageInput.disabled = true;
+              messageInput.value = "안중근님이 입력중입니다...";
+              sendBtn.innerHTML = '<i class="far fa-square"></i>';
 
-                    chatBox.innerHTML += '<div class="loadingDiv" id="loadingDiv"><div class="loadingImg"></div></div>';
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
+              chatBox.innerHTML +=
+                '<div class="loadingDiv" id="loadingDiv"><div class="loadingImg"></div></div>';
+              chatBox.scrollTop = chatBox.scrollHeight;
+            }
 
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    console.log("요청 종료됨");
-                    messageInput.disabled = false;
-                    sendBtn.disabled = false;
-                    messageInput.value = "";
-                    sendBtn.innerHTML = "<i class='fas fa-arrow-right'></i>";
-                    let loadingDiv = document.getElementById('loadingDiv');
-                    loadingDiv.remove();
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              console.log("요청 종료됨");
+              messageInput.disabled = false;
+              sendBtn.disabled = false;
+              messageInput.value = "";
+              sendBtn.innerHTML = "<i class='fas fa-arrow-right'></i>";
+              let loadingDiv = document.getElementById("loadingDiv");
+              loadingDiv.remove();
 
-                    if (xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        var text = response.message;
+              if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var text = response.message;
 
-                        displayBotMessage(text);
-                    } else if (xhr.status === 0) {
-                        console.log('Request canceled');
-                    } else {
-                        console.error('Error: ' + xhr.status);
-                    }
-                }
-            };
-            xhr.open('POST', '/chat', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({ message: message }));
+                displayBotMessage(text);
+              } else if (xhr.status === 0) {
+                console.log("Request canceled");
+              } else {
+                console.error("Error: " + xhr.status);
+              }
+            }
+          };
+          xhr.open("POST", "/chat", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(JSON.stringify({ message: message }));
         }, 1500); // Simulate a delay of 1.5 seconds (1500 milliseconds)
-    }
+      }
 
-    function displayBotMessage(text) {
-        var botMessage = document.createElement('div');
+      function displayBotMessage(text) {
+        var botMessage = document.createElement("div");
         botMessage.classList.add("message", "bot");
 
-        var profileImg = document.createElement('img');
+        var profileImg = document.createElement("img");
         profileImg.src = "../static/annprofile.png";
         profileImg.alt = "bot_img";
         profileImg.classList.add("profile-img");
 
-        var contentDiv = document.createElement('div');
+        var contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
         botMessage.appendChild(profileImg);
         botMessage.appendChild(contentDiv);
@@ -299,22 +378,22 @@
 
         // Optionally, animate text display
         displayText(contentDiv, text, 0);
-    }
+      }
 
-    function displayText(contentDiv, text, index) {
+      function displayText(contentDiv, text, index) {
         if (index < text.length) {
-            contentDiv.textContent += text[index];
-            chatBox.scrollTop = chatBox.scrollHeight;
-            setTimeout(function () {
-                displayText(contentDiv, text, index + 1);
-            }, 30);
+          contentDiv.textContent += text[index];
+          chatBox.scrollTop = chatBox.scrollHeight;
+          setTimeout(function () {
+            displayText(contentDiv, text, index + 1);
+          }, 30);
         }
-    }
-</script>
+      }
+    </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-</body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  </body>
 </html>

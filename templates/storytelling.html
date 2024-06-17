@@ -1,318 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat UI with Bootstrap 5</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+    <title>이야기 듣기</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        .back {
-            /* width: 1rem; */
-            /* height: 1rem; */
-        }
+      /* 채팅방 전체 */
+      .chat-container {
+        max-width: 100%;
+        margin: 0 auto;
+        height: 100vh;
+        border: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        background-color: #ffffff;
+      }
 
-        /* 채팅방 전체 */
-        .chat-container {
-            max-width: 100%;
-            margin: 0 auto;
-            height: 100vh;
-            border: 1px solid #ccc;
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-        }
+      /* 채팅방 해더 */
+      .chat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #ffffff;
+      }
 
-        /* 채팅방 해더 */
-        .chat-header {
-            padding: 1rem;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+      .chat-body {
+        font-family: "Do Hyeon", sans-serif;
+        flex: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        background-color: #ffffff;
+      }
 
-        .chat-body {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            background-color: #ffffff;
-        }
+      .chat-footer {
+        padding: 1rem;
+        background-color: #f8f9fa;
+      }
 
-        .chat-footer {
-            padding: 1rem;
-            background-color: #f8f9fa;
-        }
+      .npc {
+        margin-bottom: 10px;
+      }
 
-        .npc {
-            margin-bottom: 10px;
-        }
+      /*부엉이 채팅*/
+      .npc-message {
+        display: flex;
+        justify-content: start;
+      }
 
-        /*부엉이 채팅*/
-        .npc-message {
-            display: flex;
-            justify-content: start;
-        }
+      /* 부엉이 채팅 초록 박스 */
+      .npc-message-box {
+        /* width: 40%; */
+        display: inline;
+        margin-top: 1rem;
+        margin-bottom: 5px;
+        padding: 1rem;
+        border-radius: 1rem;
+        border-top-left-radius: 0px;
+        background-color: white;
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+        background-color: rgba(195, 233, 145, 0.34);
+      }
 
-        /* 부엉이 채팅 초록 박스 */
-        .npc-message-box {
-            /* width: 40%; */
-            display: inline;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 1rem;
-            border-top-left-radius: 0px;
-            background-color: white;
-            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-            background-color: rgba(195, 233, 145, 0.34);
-        }
+      /* 채팅 전송자 폰트 */
+      .npc-message-box .message-sender {
+        font-weight: bold;
+      }
 
-        /* 채팅 전송자 폰트 */
-        .npc-message-box .message-sender {
-            font-weight: bold;
-        }
+      /* 채팅 내용 */
+      .npc-message-box .message-text {
+        margin-top: 0.5rem;
+        font-size: 18px;
+      }
 
-        /* 채팅 내용 */
-        .npc-message-box .message-text {
-            margin-top: 0.5rem;
-        }
+      /* 스토리텔링 옵션 */
+      .npc-options {
+        /* width: 50%; */
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        margin-left: 40px;
+      }
 
-        /* 스토리텔링 옵션 */
-        .npc-options {
-            /* width: 50%; */
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            margin-left: 40px;
-        }
+      .npc-options-vertical {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        margin-left: 40px;
+      }
 
-        .npc-options-vertical {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            margin-left: 40px;
-        }
+      .npc-option {
+        /* width: 100px; */
+        width: 75%;
+        margin: 0px 10px 10px 10px;
+        /* margin: 0px 20px; */
+        background-color: rgba(255, 226, 90, 0.5);
+        color: black;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        /* transition: background-color 0.4s ease; */
+      }
 
-        .npc-option {
-            /* width: 100px; */
-            width: 75%;
-            margin: 0px 10px 10px 10px;
-            /* margin: 0px 20px; */
-            background-color: rgba(255, 226, 90, 0.5);
-            color: black;
-            border-radius: 10px;
-        }
+      .npc-option:active {
+        font-weight: 600;
+        font-size: 17px;
+        transform: scale(1.08);
+        background-color: rgba(255, 226, 90, 0.8);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+      }
 
-        .divider {
-            width: 100%;
-            height: 1px;
-            background-color: #ccc;
-            margin: 0.5rem 0;
-        }
+      .divider {
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        margin: 0.5rem 0;
+      }
 
-        .sent-message {
-            display: flex;
-            justify-content: end;
-        }
+      .sent-message {
+        display: flex;
+        justify-content: end;
+      }
 
-        .sent-message-box {
-            display: inline;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 1rem;
-            background-color: #b8ea76;
-            border-top-right-radius: 0px;
-        }
+      .sent-message-box {
+        display: inline;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        background-color: #b8ea76;
+        border-top-right-radius: 0px;
+      }
+
+
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="chat-container">
-        <!-- 헤더 -->
-        <div class="chat-header">
-            <!-- 백 버튼 -->
-            <div class="btn back" onclick="goBack()">
-                <svg width="10" height="19" viewBox="0 0 10 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M0.24346 10.3038C-0.0811533 9.96605 -0.0811533 9.42045 0.24346 9.08186L7.94761 1.05925C8.41622 0.570664 9.17865 0.570664 9.64809 1.05925C10.1167 1.54783 10.1167 2.3408 9.64809 2.82938L3.05761 9.69325L9.64809 16.5554C10.1167 17.0448 10.1167 17.8378 9.64809 18.3264C9.17865 18.815 8.41622 18.815 7.94761 18.3264L0.24346 10.3038Z"
-                        fill="black" />
-                </svg>
-            </div>
-            <!-- 홈버튼 -->
-            <div class="btn" onclick="goHome()">
-                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M9 0L18 8.85371L17.1818 9.65859L15.9425 8.43942V14.8618L15.9425 16H2.0575V14.8618V14.8617V8.43942L0.818182 9.65859L0 8.85371L8.18182 0.804881L9 0ZM9 1.60976L14.7854 7.30114V14.8617H11.3142V10.3087H10.1571V14.8617H7.84292V10.3087H6.68583V14.8617H3.21458V7.30114L9 1.60976ZM11.3142 9.17037H6.68583V10.3087H11.3142V9.17037Z"
-                        fill="black" fill-opacity="0.8" />
-                </svg>
-            </div>
-        </div>
+      <!-- 헤더 -->
+      <div class="chat-header">
+        <!-- 백 버튼 -->
+        <button class="btn back" onclick="goBack()">
+          <svg
+            width="10"
+            height="19"
+            viewBox="0 0 10 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.24346 10.3038C-0.0811533 9.96605 -0.0811533 9.42045 0.24346 9.08186L7.94761 1.05925C8.41622 0.570664 9.17865 0.570664 9.64809 1.05925C10.1167 1.54783 10.1167 2.3408 9.64809 2.82938L3.05761 9.69325L9.64809 16.5554C10.1167 17.0448 10.1167 17.8378 9.64809 18.3264C9.17865 18.815 8.41622 18.815 7.94761 18.3264L0.24346 10.3038Z"
+              fill="black"
+            />
+          </svg>
+        </button>
+        <!-- 홈버튼 -->
+        <button class="btn" onclick="goHome()">
+          <svg
+            width="18"
+            height="16"
+            viewBox="0 0 18 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M9 0L18 8.85371L17.1818 9.65859L15.9425 8.43942V14.8618L15.9425 16H2.0575V14.8618V14.8617V8.43942L0.818182 9.65859L0 8.85371L8.18182 0.804881L9 0ZM9 1.60976L14.7854 7.30114V14.8617H11.3142V10.3087H10.1571V14.8617H7.84292V10.3087H6.68583V14.8617H3.21458V7.30114L9 1.60976ZM11.3142 9.17037H6.68583V10.3087H11.3142V9.17037Z"
+              fill="black"
+              fill-opacity="0.8"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="divider"></div>
 
-        <div class="divider"></div>
-
-        <!-- 채팅방 전체 -->
-        <div class="chat-body" id="chat-body">
-            <!-- 부엉이 npc -->
-            <div class="npc">
-                <!-- npc 메시지 -->
-                <div class="npc-message">
-                    <img src="/static/owl.png" height="50px" alt="" />
-                    <div class="npc-message-box">
-                        <div class="message-sender">역사 천재</div>
-                        <div class="message-text">안녕! 난 너에게 이야기를 해줄 부엉이 선생님이야!
-                            어떤 인물의 이야기를 듣고 싶어?
-                        </div>
-                    </div>
-                </div>
-                <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
-                    <div class="btn npc-option" onclick="selectOptionByUser('선덕여왕'); whatdoyouwanttoknow('선덕여왕');">
-                        선덕여왕
-                    </div>
-                    <div class="btn npc-option" onclick="selectOptionByUser('세종대왕'); whatdoyouwanttoknow('세종대왕');">
-                        세종대왕
-                    </div>
-                    <div class="btn npc-option" onclick="selectOptionByUser('안중근'); whatdoyouwanttoknow('안중근');">
-                        안중근
-                    </div>
-                </div>
-            </div>
-            <!-- 옵션 클릭 사용자 메시지 -->
-            <div class="sent-message">
-                <img src="" alt="" />
-                <div class="sent-message-box d-none">
-                    <div class="message-sender text-end">You</div>
-                    <div class="message-text"></div>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="chat-footer">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Type a message">
-                <button class="btn btn-primary" type="button">Send</button>
-            </div>
-        </div> -->
+      <!-- 채팅방 전체 -->
+      <div class="chat-body" id="chat-body" style="padding-bottom: 300px">
+        <!-- 이 안에 채팅 내용 채워질 예정  -->
+      </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
-        function goBack() {
-            window.history.back();
-        }
+      const chatBody = document.getElementById("chat-body");
 
-        function goHome() {
-            window.location.href = '/';
-        }
-        // 기본 정보
-        let sejongInfo = '세종은 똑똑했어'
-        let sundukInfo = '선덕은 예뻤어'
-        let ahnInfo = '안중근은 멋졌어'
+      // 라우팅시, 동작될 코드
+      window.onload = function () {
+        selectHistoryPerson();
+      };
 
-        // 업적 정보
-        sejong_job_list = [
-            '평화로운 유교 정치',
-            '책을 만드는 집현전',
-            '훈민정음, 한글의 탄생',
-            '눈부신 과학기술의 발전',
-            '음악, 아악',]
-        sunduk_job_list = [
-            '백성들을 위한 따뜻한 마음',
-            '나라를 지키는 상징, 구층목탑',
-            '위기와 죽음',]
-        ahn_job_list = [
-            '독립을 위한 망명과 활동',
-            '일본의 압박과 을사늑약',
-            '항일 의병 투쟁',
-            '이토 히로부미 저격',
-            '의연한 재판과 순국',
-        ]
-        // 업적 답변
-        sejong_job_answer = {
-            '평화로운 유교 정치': "세종대왕은 유교적 이념을 바탕으로 중앙집권적 통치체제를 강화하고, 백성을 위한 정치와 사회 제도를 개선하였습니다. 특히, 경국대전의 초안을 작성하여 법제도를 정비하고 유교 교육을 강화하였습니다.",
-            '책을 만드는 집현전': "세종대왕은 집현전을 설립하여 학문과 문화를 진흥시켰습니다. 집현전은 학자들이 모여 연구하고 토론하며 다양한 분야에서 지식을 쌓는 중요한 기관이었습니다. 이를 통해 한글 창제와 같은 중요한 성과를 이루어냈습니다.",
-            '훈민정음, 한글의 탄생': "세종대왕은 백성들이 쉽게 읽고 쓸 수 있는 한글, 즉 훈민정음을 창제하였습니다. 이는 한국 역사상 가장 중요한 문화적 업적으로 평가되며, 오늘날까지도 사용되고 있는 한국어의 기초가 되었습니다.",
-            '눈부신 과학기술의 발전': "세종대왕은 과학기술의 발전에도 큰 관심을 기울였습니다. 천문학, 의학, 농업 등의 분야에서 많은 발전이 이루어졌으며, 측우기, 앙부일구 등 다양한 과학기구를 발명하였습니다.",
-            '음악, 아악': "세종대왕은 음악에도 깊은 관심을 가지고 새로운 악기와 악곡을 창작하였습니다. 특히, 아악을 정비하고 궁중음악을 체계화하여 음악 문화의 발전에 크게 기여하였습니다."
-        }
-        sunduk_job_answer = {
-            '백성들을 위한 따뜻한 마음': "선덕여왕은 백성들을 위한 여러 가지 정책을 펼치며 따뜻한 마음으로 다스렸습니다.",
-            '나라를 지키는 상징, 구층목탑': "선덕여왕은 나라를 지키기 위해 황룡사 구층목탑을 건립하여 신라의 번영과 안정을 기원했습니다.",
-            '위기와 죽음': "선덕여왕은 재위 기간 동안 여러 가지 위기와 어려움을 겪었으며, 결국 647년에 세상을 떠났습니다.",
-        }
-        ahn_job_answer = {
-            '독립을 위한 망명과 활동': "안중근은 독립을 위해 망명하여 여러 활동을 펼쳤습니다.",
-            '일본의 압박과 을사늑약': "안중근은 일본의 압박과 을사늑약을 비판하며 독립운동에 헌신하였습니다.",
-            '항일 의병 투쟁': "안중근은 항일 의병 투쟁을 통해 일본에 저항하였습니다.",
-            '이토 히로부미 저격': "안중근은 1909년 하얼빈에서 이토 히로부미를 저격하여 한국의 독립 의지를 세계에 알렸습니다.",
-            '의연한 재판과 순국': "안중근은 일본 법정에서 의연하게 자신의 뜻을 밝히고 1910년 순국하였습니다.",
-        }
-        // 스토리 정보
-        sejong_story_list = ['초정 약수 이야기', '고기를 좋아하는 세종', '한글 창제']
-        sunduk_story_list = [
-            '향기 없는 꽃의 비밀',
-            '개구리들의 비밀 신호',
-            '마지막 예언']
-        ahn_story_list = [
-            '손가락의 단지',
-            '하얼빈에서의 준비',
-            '감옥에서의 교육 활동']
-        // 스토리 답변
-        sejong_story_answer = {
-            '초정 약수 이야기': "세종대왕은 건강이 좋지 않았을 때 초정 약수를 마시며 요양을 하였고, 이 약수는 세종대왕의 병을 호전시키는 데 큰 역할을 했다고 전해집니다.",
-            '고기를 좋아하는 세종': "세종대왕은 고기를 좋아했으며, 특히 소고기를 즐겨 먹었다고 합니다.",
-            '한글 창제': "세종대왕은 백성들이 쉽게 읽고 쓸 수 있는 한글, 즉 훈민정음을 창제하였습니다. 이는 한국 역사상 가장 중요한 문화적 업적으로 평가되며, 오늘날까지도 사용되고 있는 한국어의 기초가 되었습니다."
-        }
-        sunduk_story_answer = {
-            '향기 없는 꽃의 비밀': "선덕여왕은 향기 없는 꽃을 보고 자신의 운명을 예견했다고 전해집니다.",
-            '개구리들의 비밀 신호': "선덕여왕은 개구리들의 울음소리를 듣고 적의 침입을 알아챘다는 이야기가 전해집니다.",
-            '마지막 예언': "선덕여왕은 죽기 전, 자신의 무덤 자리를 예언하며 그곳에 묻히기를 원했다고 합니다."
-        }
-        ahn_story_answer = {
-            '손가락의 단지': "안중근은 동지들과 함께 독립을 맹세하며 손가락을 자르는 결의를 하였습니다.",
-            '하얼빈에서의 준비': "안중근은 하얼빈에서 이토 히로부미 저격을 위해 철저히 준비하였습니다.",
-            '감옥에서의 교육 활동': "안중근은 감옥에서도 교육 활동을 멈추지 않고, 동료들에게 글을 가르치며 희망을 잃지 않았습니다."
-        }
+      function goBack() {
+        window.history.back();
+      }
 
-        // 유저 클릭시 응답
-        function selectOptionByUser(message) {
-            // 유저 클릭시 유저 메시지로 보내질 내용
-            let newMessage = document.createElement("div");
-            newMessage.className = "sent-message";
-            newMessage.innerHTML = `
+      function goHome() {
+        window.location.href = "/";
+      }
+      // 기본 정보
+      const sejongInfo = `
+      아주 오랜 옛날 조선에는 세종대왕이라는 왕이 있었어. 
+      그는 한글을 창제하여 백성들이 읽고 쓸 수 있게 했으며, 집현전을 설치하여 학문과 정책 연구를 촉진했어. 
+      농업을 장려하고 천문 과학 기기를 개발하여 백성에게 혜택을 주었어. 그는 나라를 위해 헌신한 위대한 왕으로 기억된단다.
+      `;
+      const sundukInfo = `
+     아주 오랜 옛날 조선에는 세종대왕이라는 왕이 있었어. 
+     그는 한글을 창제하여 백성들이 읽고 쓸 수 있게 했으며, 집현전을 설치하여 학문과 정책 연구를 촉진했어. 
+     농업을 장려하고 천문 과학 기기를 개발하여 백성에게 혜택을 주었어. 그는 나라를 위해 헌신한 위대한 왕으로 기억된단다.
+      
+      `;
+      const ahnInfo = `
+      안중근 의사는 어릴 때부터 책을 좋아하며 공부를 열심히 했고, 아버지로부터 나라를 사랑하는 가르침을 받았어.
+      을사늑약 이후 일본의 식민지화에 저항하기 위해 의병 활동을 시작했고, 1909년 이토 히로부미를 저격하여 체포되었지. 
+      수감 중에도 나라를 위해 끊임없이 노력했어. 안중근 의사의 용기와 희생은 지금도 많은 사람들에게 감동을 주고 있어.
+      `;
+
+      // 업적 정보
+      const sejong_job_list = [
+        "평화로운 유교 정치",
+        "책을 만드는 집현전",
+        "훈민정음, 한글의 탄생",
+        "눈부신 과학기술의 발전",
+        "음악, 아악",
+      ];
+      const sunduk_job_list = [
+        "백성들을 위한 따뜻한 마음",
+        "나라를 지키는 상징, 구층목탑",
+        "위기와 죽음",
+      ];
+      const ahn_job_list = [
+        "독립을 위한 망명과 활동",
+        "일본의 압박과 을사늑약",
+        "항일 의병 투쟁",
+        "이토 히로부미 저격",
+        "의연한 재판과 순국",
+      ];
+     
+      const sejong_job_answer = {
+        "평화로운 유교 정치":
+          "세종대왕은 유교 정치를 통해 나라를 안정시켰어. 유교의 가르침을 중시하며 부모를 공경하고 착하게 사는 가치를 강조했어. 집현전을 설치하여 인재를 양성하고, 다양한 책을 편찬하여 백성들이 유교의 덕목을 배울 수 있도록 했어. 특히 『삼강행실도』와 같은 책을 통해 유교 사상을 쉽게 전달하려 노력했지. 세종대왕의 노력 덕분에 조선은 평화롭고 번영하는 나라로 발전할 수 있었단다.",
+        "책을 만드는 집현전":
+          " 세종대왕은 집현전을 통해 학자들이 나라의 학문과 문화를 발전시키도록 했어. 집현전은 학자들이 유교적 의례와 제도를 연구하고, 다양한 서적을 편찬하여 조선의 학문적 수준을 높이는 중요한 기관이었어. 세종대왕은 학자들에게 휴가를 주고 연구를 지원하여 나라를 잘 다스리는 데 큰 기여를 했어. 그 결과로 조선은 학문과 문화가 발전하고, 백성들이 행복하게 살 수 있는 나라가 되었단다.",  
+        "훈민정음, 한글의 탄생":
+          "세종대왕은 백성들이 어려운 한자를 배우지 못해 자신의 생각을 표현하는 데 어려움을 겪자, 새로운 글자를 만들기로 했어. 집현전에서 음운학 연구를 시작하고, 1443년에 훈민정음을 완성했어. 이는 '백성을 가르치는 바른 소리'를 의미하며, 세종대왕은 이를 통해 백성들이 쉽게 배우고 읽을 수 있도록 했어. 그 결과로 조선은 문화적 발전과 함께 풍요로운 시대를 맞이할 수 있었어.",
+          "눈부신 과학기술의 발전":
+          `
+            세종 시대는 과학기술의 발전이 눈부신 시기였어. 어떤 게 있는지 한 번 볼래?<br>
+
+            ① 혼천의<br>
+            혼천의란 세종대왕이 별의 움직임을 살피고 기록하기 위해 정인지와 함께 설계하고 장영실이 만든 천체측정기야. 별의 움직임을 통해 계절의 변화와 시간의 흐름을 확인 할 수 있어서 농사를 짓는 백성들에게 매우 중요했어. 그리고 해와 달, 별의 움직임을 관찰하여 달력을 만들기도 했어.<br>
+
+            ② 앙부일구<br>
+            앙부일구란 세종 때 만들어진 해시계야. 시계 가운데에 있는 바늘의 그림자가 가리키는 곳에 따라 시간과 절기를 알 수 있었어. 특히 농사를 짓는 백성들에게는 절기가 매우 중요한데 세종대왕은 누구나 시간을 알 수 있도록 사람이 많이 다니는 곳에 해시계를 두었어. 또한 글자를 모르는 사람을 위해서 글자 대신에 12지신 동물을 그림으로 표현하며 누구나 시간을 읽을 수 있도록 했어.<br>
+
+            그밖에도 시간을 정확히 재는 물시계 자격루, 하늘의 별을 관측하는 혼천의, 비의 양을 측정하는 측우기, 농사 짓는 방법을 정리한 책인 『농사직설』도 편찬했어. <br>
+            `,   
+        "음악, 아악" :
+          "세종대왕은 음악과 예의를 중시하여 나라를 다스리기 위해 노력했어. 박연과 함께 아악이라는 새로운 음악을 창조했는데, 이는 유교적 의식에서 사용되었어. 세종대왕은 아악을 통해 사람들 사이의 예의를 더욱 강화하고자 했고, 이를 위해 여러 악기와 정간보라는 특별한 악보도 개발했어. 세종대왕의 음악적 업적은 조선의 문화를 풍부하게 만들었고, 예의와 음악을 통해 조선이 질서 정연하고 아름다운 나라로 발전할 수 있었어."
+      };
+      const sunduk_job_answer = {
+        "백성들을 위한 따뜻한 마음":
+          "선덕여왕은 여왕이 되고 어려운 사람들을 돕기 위해 많은 노력을 기울였어. 전국에 관리들을 보내어 백성들을 도왔지. 633년에는 세금을 1년 동안 면제해주었고, 634년과 635년에는 분황사와 영묘사라는 절을 지었단다. 또한, 백좌강회를 열어 불교 경전을 설명하여 백성들이 안심하고 잘 살 수 있도록 했어.",
+        "나라를 지키는 상징, 구층목탑":
+          "선덕여왕은 634년에 '인평'이라는 이름을 사용하며 나라의 자주성을 지어. 642년 백제의 공격으로 많은 성을 잃었고, 김유신 장군을 임명해 방어에 나섰어. 643년 당나라에 도움을 요청하고, 자장 스님을 신라로 돌아오게 해 불교를 발전시켰지. 자장 스님의 후원으로 황룡사에 80미터 높이의 구층목탑을 세워 나라의 위기를 극복하고, 여왕의 권위를 상징하게 했단다.",
+        "위기와 죽음":
+          "642년, 선덕여왕은 백제 의자왕에게 서쪽 성들을 빼앗기고 고구려와 당나라에 도움을 요청했으나 실패했어. 647년 비담과 염종이 반란을 일으켜 10여 일 동안 대치했으나 김유신의 꾀로 진압되었어. 이 과정에서 선덕여왕은 사망했고, 반란으로 귀족들의 힘은 약해졌으며, 김춘추와 김유신의 권력은 강화되었단다.",
+      };
+      const ahn_job_answer = {
+        "독립을 위한 망명과 활동":
+          "1904년에 러일전쟁이 일어나자 안중근은 해외로 망명을 결심했어. 상해에서 만난 프랑스 신부의 조언으로 다시 한국으로 돌아와 학교를 세우고 석탄 사업을 시작했지. 1907년, 국채보상기성회 관서지부장이 되어 반일운동을 시작했어. 이후 북간도로 망명해 독립 운동가들과 함께 활동하며 독립 정신을 고취했다고 해.",
+        "일본의 압박과 을사늑약":
+          "러일 전쟁에서 승리한 일본은 대한 제국을 강제로 을사늑약을 체결하게 했어. 이로 인해 대한 제국은 다른 나라와 조약을 맺을 수 있는 외교권을 빼앗겼어. 1907년에 일본은 우리나라의 고종 황제를 강제로 물러나게 하고, 그 아들인 순종을 새로운 황제로 세웠어. 그리고 군대도 모두 해산시켰대.",
+        "항일 의병 투쟁":
+          "안중근은 일본의 압박을 피해 항일 의병 투쟁을 위해 러시아의 연해주로 건너갔어. 1908년 봄, 그는 블라디보스토크에서 독립 운동가들과 함께 의병을 조직하여 참모 중장으로 활동했어. 의병 200여 명을 이끌고 함경도 경흥으로 가서 일본 군인과 경찰 수십 명을 처치했으며, 포로는 국제법에 따라 석방되었어. 그러나 일본군의 반격으로 의병 부대는 크게 피해를 입고 해체되었고, 안중근도 굶주림을 겪으며 러시아 연해주로 돌아갔어.",
+        "이토 히로부미 저격":
+          "1909년 봄, 안중근은 독립운동을 위해 ‘동의단지회’를 결성하고 왼손 약지를 잘라 ‘대한 독립’을 써 태극기를 들었어. 가을에 이토 히로부미의 방문 소식을 듣자, 안중근은 그를 하얼빈에서 저격하여 일본의 압박을 도발하고자 했어. 1909년 10월 26일, 하얼빈에서 이토 히로부미가 열차에서 내리자마자 안중근은 권총을 꺼내어 3발을 쐈어. 이토 히로부미는 그 자리에서 사망했고, 안중근은 러시아 헌병에게 체포되고 말았어.",
+        "의연한 재판과 순국":
+          "일본 대사관에 넘겨진 후, 안중근은 죄목을 들어 사형 판결을 받았고, 항소하지 않기로 결심했어. 그의 어머니의 권유로 결심을 다지며, 감옥에서 자서전과 『동양평화론』을 썼어. 1910년 3월 26일, 뤼순 감옥에서 32세의 나이로 사형당했는데, 죽기 직전까지도 품위를 유지한 숭고한 사람이야.",
+      };
+      // 스토리 정보
+      const sejong_story_list = [
+        "초정 약수 이야기",
+        "고기를 좋아하는 세종",
+        "한글 창제",
+      ];
+      const sunduk_story_list = [
+        "향기 없는 꽃의 비밀",
+        "개구리들의 비밀 신호",
+        "마지막 예언",
+      ];
+      const ahn_story_list = [
+        "손가락의 단지",
+        "하얼빈에서의 준비",
+        "감옥에서의 교육 활동",
+      ];
+      // 스토리 답변
+      const sejong_story_answer = {
+        "초정 약수 이야기":
+          "눈병으로 고생하던 그는 청주의 초정 약수가 눈에 좋다는 소문을 듣고 직접 그곳을 방문했어. 약수를 마시고 눈을 담그며 목욕을 하자 눈 건강이 회복되었고, 다시 일에 집중할 수 있었어. 이후 그의 경험은 초정 약수의 효능으로 널리 알려지게 되었고, 많은 사람들이 그를 찾아 초정 약수를 마셨어. 세종대왕은 백성을 사랑하며 그들의 생활 개선에 헌신한 위대한 왕으로 기억되고 있어.",
+        "고기를 좋아하는 세종":
+          "세종대왕은 고기를 좋아했지만,  가족의 사망이나 재난 상황에서는 고기를 먹지 않았어. 하지만 노인 신하들에게는 고기를 먹으라고 했지. 이는 자신은 고기를 먹지 않으면서도, 백성들과 신하들의 건강을 챙기는 마음씨를 가졌다는 것을 알 수 있어. 그는 참으로 백성을 사랑하는 현명한 왕이었단다.",
+        "한글 창제":
+          "옛 조선의 세종대왕은 1443년 훈민정음을 창제하여 백성들이 쉽게 읽고 쓸 수 있는 한글을 만들었어. 처음에는 신하들의 반대를 받았지만, 세종대왕은 백성들이 쉽게 학문을 배우고 유교적 가치를 이해할 수 있게 하려는 목적으로 이를 이끌었지. 훈민정음은 여성과 노비들에게도 글을 배울 기회를 주었고, 조선의 문화적 변화를 이끌었단다. 세종대왕은 백성을 사랑하고 그들의 생활을 개선하기 위해 노력한 위대한 왕으로 기억되고 있어.",
+      };
+      const sunduk_story_answer = {
+        "향기 없는 꽃의 비밀":
+          "당나라 황제 태종이 붉은색, 자주색, 흰색 모란꽃 그림과 꽃씨를 선물로 보냈을 때, 선덕여왕은 이 꽃들이 향기가 없을 것이라고 예상했어. 다음 해에 꽃들이 피자 실제로 향기가 없었고, 선덕여왕은 황제가 자신을 조롱하려 했음을 알아차렸어.",
+        "개구리들의 비밀 신호":
+          "겨울 어느 날, 영묘사라는 절에 있는 연못에서 많은 개구리들이 울었어. 이 소식을 들은 선덕여왕은 이를 군대를 의미한다고 해석하고, 여근곡에 백제 군사들이 숨어 있음을 알아챘어. 여왕은 신라 장군인 알천을 보내 적군을 물리쳤어.",
+        "마지막 예언":
+          "선덕여왕은 자신의 죽을 날과 묻힐 곳을 미리 알고 있었단다. 그녀는 낭산 남쪽에 묻힐 것이라고 예언했고, 실제로 그녀가 죽은 후 10년 뒤 문무왕이 그곳에 사천왕사를 세웠지. 그곳은 도리천이라 불렸고, 예언은 정확히 들어맞았어.",
+      };
+      const ahn_story_answer = {
+        "손가락의 단지":
+          "안중근은 독립운동을 결심하며 손가락을 자른 후 '혈서'를 썼어. 1909년, 11명의 동지와 함께 손가락을 자르고 대한독립, 이라는 글자를 피에 썼대. 이는 그의 결연한 의지를 나타내는 행동으로, 많은 이들에게 깊은 감동을 주었지. 안중근 의사는 자신의 용기와 헌신으로 한국의 독립을 위해 삶을 바쳤어.",
+        "하얼빈에서의 준비":
+          "안중근은 이토 히로부미를 저격하기 전에 많은 준비를 했어. 1909년 하얼빈으로 향하기 전에 현장을 답사하고, 이토 히로부미의 동선을 파악했어. 중국 동지들과 협력하여 작전을 계획하고, 일본군의 감시를 피하기 위해 변장을 했어. 현지인들과 소통하며 정보를 수집했고, 그의 계획은 철저했어. 이토 히로부미 저격은 단순한 충동이 아니라 신중하게 준비된 결과였다고 해.",
+        "감옥에서의 교육 활동":
+          "안중근은 뤼순 감옥에서 수감되면서 단순히 자신의 신념을 적는 것에 그치지 않았어. 그는 다른 수감자들에게 한자를 가르치고 민족의 역사를 전하며 민족의식을 심었어. 그의 교육 활동은 많은 수감자들에게 큰 영향을 미쳤고, 일부는 이후 독립운동에 참여했어. 안중근은 감옥에서도 자신의 역할을 다하며 많은 사람들에게 감동을 주었어.",
+      };
+
+      //유저클릭 시 응답 2
+//       function selectOptionByUser(option, type, character) {
+//     // 유저 클릭시 유저 메시지로 보내질 내용
+//     let newMessage = document.createElement("div");
+//     newMessage.className = "sent-message";
+//     newMessage.innerHTML = `
+//         <div class="sent-message-box">
+//             <div class="message-text">${option}</div>
+//         </div>
+//     `;
+
+//     // 새로운 메시지를 chat-body에 추가
+//     chatBody.appendChild(newMessage);
+
+//     // Scroll to the bottom of the chat body (optional)
+//     chatBody.scrollTop = chatBody.scrollHeight;
+
+//     // whatjob 또는 다른 함수 호출
+//     if (type === 'job') {
+//         whatjob(character, option);
+//     } else if (type === 'story') {
+//         whatstory(character, option);
+//     }
+// }
+
+
+      // 유저 클릭시 응답
+      function selectOptionByUser(message) {
+        // 유저 클릭시 유저 메시지로 보내질 내용
+        let newMessage = document.createElement("div");
+        newMessage.className = "sent-message";
+        newMessage.innerHTML = `
                 <div class="sent-message-box">
                     <div class="message-text">${message}</div>
                 </div>
                 `;
 
-            // 새로운 메시지를 chat-body에 추가
-            let chatBody = document.getElementById("chat-body");
-            chatBody.appendChild(newMessage);
+        // 새로운 메시지를 chat-body에 추가
+        chatBody.appendChild(newMessage);
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
+        // Scroll to the bottom of the chat body (optional)
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
 
-        // npc 역할1
-        function whatdoyouwanttoknow(character) {
-
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+      // npc 무엇이 궁금해? - 옵션 제공
+      function whatdoyouwanttoknow(character) {
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${character}의 무엇이 궁금해?
+                        <div class="message-text">
+                            
                         </div>
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
-                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow2('${character}');">
+                <div class="npc-options npc-options-vertical">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
                     <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
@@ -325,34 +408,30 @@
             </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 무엇이 궁금해?`;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
+        displayText(message, text, 0);
+      }
 
-        }
-
-        // what do you want to know 2
-        function whatdoyouwanttoknow2(character) {
-
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+      // npc 무엇이 궁금해? - 다른 사람 선택지 추가
+      function whatdoyouwanttoknow2(character) {
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${character}의 무엇이 궁금해?
-                        </div>
+                        <div class="message-text"></div>
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
-                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}'); whatdoyouwanttoknow('${character}');">
+                <div class="npc-options npc-options-vertical">
+                    <div class="btn npc-option" onclick="selectOptionByUser('어떤 사람이었어?'); whatkindofperson('${character}');">
                         어떤 사람이었어?
                     </div>
                     <div class="btn npc-option" onclick="selectOptionByUser('무슨 일을 했어?'); whatjob('${character}');">
@@ -361,7 +440,7 @@
                     <div class="btn npc-option" onclick="selectOptionByUser('재밌는 이야기 알려줘'); funstory('${character}');">
                         재밌는 이야기 알려줘
                     </div>
-                    <div class="btn npc-option" style="background-color: #FFD464" onclick="showAllPeople()";">
+                    <div class="btn npc-option" style="background-color: #FFD464" onclick="selectHistoryPerson()";">
                         다른 인물의 이야기 듣기
                     </div>
                     
@@ -369,264 +448,480 @@
             </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 무엇이 궁금해?`;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
+        displayText(message, text, 0);
+      }
 
-        }
+    //인물 별 메인으로 이동
+      //선덕여왕 - 업적->홈
+      function sunduk_back_job(character) {
 
-
-
-
-
-        // 유저 클릭시 npc 역할2
-        function whatkindofperson(character) {
-            let info = ''
-
-            if (character === '세종대왕') {
-                info = sejongInfo
-            } else if (character === '선덕여왕') {
-                info = sundukInfo
-            } else if (character === '안중근') {
-                info = ahnInfo
-            }
-
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${info}
-                        </div>
+                        <div class="message-text"></div>
                     </div>
                 </div>
-            </div>
-            `;
-
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
-
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
-
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-
-        // 유저 클릭시 npc 역할3
-        function whatjob(character) {
-
-            let htmlString = ``;
-
-            let job_list = []
-            if (character === "세종대왕") {
-                job_list = sejong_job_list
-            } else if (character === "선덕여왕") {
-                job_list = sunduk_job_list
-            } else if (character === "안중근") {
-                job_list = ahn_job_list
-            }
-
-
-            for (let job of job_list) {
-                htmlString += `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}'); whatdoyouwanttoknow2('${character}');">
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sunduk_job_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
                     ${job}
                 </div>
-                `
-            }
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                선덕여왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
 
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //선덕여왕 스토리 -> 홈
+      function sunduk_back_story(character) {
+          //sunduk_story_home = ['향기 없는 꽃의 비밀', '개구리들의 비밀 신호', '마지막 예언']
+          let newMessage = document.createElement("div");
+          newMessage.className = "npc";
+          newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${character}은 많은 업적이 있어! 어떤 업적을 알고 싶어?
-                        </div>
+                        <div class="message-text"></div>
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
-                    ${htmlString}
-                </div>
-            </div>
-            `;
-
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
-
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
-
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function jobInfo(job, character) {
-
-            let job_list = []
-            let job_answer = []
-
-            if (character === "세종대왕") {
-                job_list = sejong_job_list
-                job_answer = sejong_job_answer
-            } else if (character === "선덕여왕") {
-                job_list = sunduk_job_list
-                job_answer = sunduk_job_answer
-            } else if (character === "안중근") {
-                job_list = ahn_job_list
-                job_answer = ahn_job_answer
-            }
-
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
-                <div class="npc-message">
-                    <img src="/static/owl.png" height="50px" alt="" />
-                    <div class="npc-message-box">
-                        <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${job_answer[`${job}`]}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
-
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
-
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-
-        // 재밌는 이야기 옵션 제공
-        function funstory(character) {
-            let story_list = []
-
-            if (character === "세종대왕") {
-                story_list = sejong_story_list
-            } else if (character === "선덕여왕") {
-                story_list = sunduk_story_list
-            } else if (character === "안중근") {
-                story_list = ahn_story_list
-            }
-
-            let htmlString = ``;
-
-            for (let story of story_list) {
-                htmlString += `
-                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}'); whatdoyouwanttoknow2('${character}');">
+                 <div class="npc-options npc-options-vertical">
+            ${sunduk_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
                     ${story}
                 </div>
-                `
-            }
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                선덕여왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //세종대왕 업적 -> 홈
+      function sejong_back_job(character) {
+        //sejong_job_home = ['평화로운 유교 정치', '책을 만드는 집현전', '훈민정음, 한글의 탄생','눈부신 과학기술의 발전', '음악, 아악' ]
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${character}의 재밌는 스토리는 많이 있어! 어느 것을 알고 싶어?
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sejong_job_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                세종대왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //세종대왕 스토리 -> 홈
+      function sejong_back_story(character) {
+        //sejong_story_home = ['평화로운 초정 약수 이야기', '고기를 좋아하는 세종', '한글 창제']
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sejong_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                    ${story}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                세종대왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //안중근 업적 -> 홈
+      function ann_back_job(character) {
+        //ann_job_home = ['독립을 위한 망명과 활동 ', '일본의 압박과 을사늑약', '항일 의병 투쟁','이토 히로부미 저격', '의연한 재판과 순국' ]
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${ahn_job_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                안중근의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //안중근 스토리 -> 홈
+      function ann_back_story(character) {
+        //ann_story_home = ['손가락의 단지', '하얼빈에서의 준비', '감옥에서의 교육 활동']
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${ahn_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                    ${story}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                안중근의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+    
+
+      // 어떤 사람이야? - 기본 정보
+      function whatkindofperson(character) {
+        let info = "";
+
+        if (character === "세종대왕") {
+          info = sejongInfo;
+        } else if (character === "선덕여왕") {
+          info = sundukInfo;
+        } else if (character === "안중근") {
+          info = ahnInfo;
+        }
+
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${info}`;
+
+        displayText(message, text, 0, whatdoyouwanttoknow2, character);
+      }
+
+      // 무슨 업적 - 옵션 제공
+      function whatjob(character) {
+        let htmlString = ``;
+
+        let job_list = [];
+        if (character === "세종대왕") {
+          job_list = sejong_job_list;
+        } else if (character === "선덕여왕") {
+          job_list = sunduk_job_list;
+        } else if (character === "안중근") {
+          job_list = ahn_job_list;
+        }
+
+        for (let job of job_list) {
+          htmlString += `
+                <div class="btn npc-option" 
+                onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
+                    ${job}
+                </div>
+                `;
+        }
+
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text">
                         </div>
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded npc-options-vertical">
+                <div class="npc-options npc-options-vertical">
                     ${htmlString}
                 </div>
             </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}은 많은 업적이 있어! 어떤 업적을 알고 싶어?`;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
+        displayText(message, text, 0);
+      }
+
+      // 업적 답변
+      async function jobInfo(job, character) {
+        let job_list = [];
+        let job_answer = [];
+
+        if (character === "세종대왕") {
+          job_list = sejong_job_list;
+          job_answer = sejong_job_answer;
+        } else if (character === "선덕여왕") {
+          job_list = sunduk_job_list;
+          job_answer = sunduk_job_answer;
+        } else if (character === "안중근") {
+          job_list = ahn_job_list;
+          job_answer = ahn_job_answer;
         }
 
-        // 재밌는 이야기 답변
-        function storyInfo(story, character) {
-
-            let story_list = []
-            let story_answer = []
-
-            if (character === "세종대왕") {
-                story_list = sejong_story_list
-                story_answer = sejong_story_answer
-            } else if (character === "선덕여왕") {
-                story_list = sunduk_story_list
-                story_answer = sunduk_story_answer
-            } else if (character === "안중근") {
-                story_list = ahn_story_list
-                story_answer = ahn_story_answer
-            }
-            // let htmlString = "";
-
-            // for (let story in story_list) {
-            //     htmlString += `
-            //     <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}');">
-            //         ${story}
-            //     </div>
-            //     `
-            // }
-
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${story_answer[`${story}`]}
+                        <div class="message-text">
                         </div>
                     </div>
                 </div>
             </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        let message = newMessage.querySelector(".message-text");
+        let text = `${job_answer[`${job}`]}`;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
+        if (character === "세종대왕") {
+          displayText(message, text, 0, sejong_back_job, character)
+        } else if (character === "선덕여왕") {
+          displayText(message, text, 0, sunduk_back_job, character);
+         
+        } else if (character === "안중근") {
+          displayText(message, text, 0, ann_back_job, character);
         }
 
-        function knowmore(character) {
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+        // whatdoyouwanttoknow2('${character}');
+      }
+
+      // 재밌는 이야기 알려줘 - 옵션 제공
+      function funstory(character) {
+        let story_list = [];
+
+        if (character === "세종대왕") {
+          story_list = sejong_story_list;
+        } else if (character === "선덕여왕") {
+          story_list = sunduk_story_list;
+        } else if (character === "안중근") {
+          story_list = ahn_story_list;
+        }
+
+        let htmlString = ``;
+
+        for (let story of story_list) {
+          htmlString += `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                    ${story}
+                </div>
+                `;
+        }
+
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                 <div class="npc-message">
                     <img src="/static/owl.png" height="50px" alt="" />
                     <div class="npc-message-box">
                         <div class="message-sender">역사 천재</div>
-                        <div class="message-text">${character}에 대해 더 알고 싶은 거 있어?
+                        <div class="message-text">
                         </div>
                     </div>
                 </div>
                 <!-- npc 채팅 옵션 -->
-                <div class="npc-options rounded">
+                <div class="npc-options npc-options-vertical">
+                    ${htmlString}
+                </div>
+            </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 재밌는 스토리는 많이 있어! 어느 것을 알고 싶어?`;
+
+        displayText(message, text, 0);
+      }
+
+      // 재밌는 이야기 답변
+      function storyInfo(story, character) {
+        let story_list = [];
+        let story_answer = [];
+
+        if (character === "세종대왕") {
+          story_list = sejong_story_list;
+          story_answer = sejong_story_answer;
+        } else if (character === "선덕여왕") {
+          story_list = sunduk_story_list;
+          story_answer = sunduk_story_answer;
+        } else if (character === "안중근") {
+          story_list = ahn_story_list;
+          story_answer = ahn_story_answer;
+        }
+
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${story_answer[`${story}`]}`;
+
+        if (character === "세종대왕") {
+          displayText(message, text, 0, sejong_back_story, character)
+        } else if (character === "선덕여왕") {
+          displayText(message, text, 0, sunduk_back_story, character);
+         
+        } else if (character === "안중근") {
+          displayText(message, text, 0, ann_back_story, character);
+        }
+
+        //displayText(message, text, 0, whatdoyouwanttoknow2, character);
+      }
+
+      function knowmore(character) {
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text">
+                        </div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                <div class="npc-options">
                     
                     <div class="btn npc-option" onclick="selectOptionByUser('유교정치')">
                         더 알고 싶어
@@ -638,32 +933,30 @@
             </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}에 대해 더 알고 싶은 거 있어?`;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
+        displayText(message, text, 0);
+      }
 
-        function showAllPeople() {
-            let newMessage = document.createElement("div");
-            newMessage.className = "npc";
-            newMessage.innerHTML = `
+      function selectHistoryPerson() {
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
                     <!-- npc 메시지 -->
                     <div class="npc-message">
                         <img src="/static/owl.png" height="50px" alt="" />
                         <div class="npc-message-box">
                             <div class="message-sender">역사 천재</div>
-                            <div class="message-text">안녕! 난 너에게 이야기를 해줄 부엉이 선생님이야!
-                                어떤 인물의 이야기를 듣고 싶어?
+                            <div class="message-text">
                             </div>
                         </div>
                     </div>
                     <!-- npc 채팅 옵션 -->
-                    <div class="npc-options rounded">
+                    <div class="npc-options">
                         <div class="btn npc-option" onclick="selectOptionByUser('선덕여왕'); whatdoyouwanttoknow('선덕여왕');">
                             선덕여왕
                         </div>
@@ -685,17 +978,91 @@
                 </div>
             `;
 
-            // Get the chat body element where you want to append the new message
-            let chatBody = document.getElementById("chat-body");
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append the new message to the chat body
-            chatBody.appendChild(newMessage);
+        let message = newMessage.querySelector(".message-text");
+        let text = `안녕! 난 너에게 이야기를 해줄 부엉이 선생님이야!
+    어떤 인물의 이야기를 듣고 싶어?`;
 
-            // Scroll to the bottom of the chat body (optional)
-            chatBody.scrollTop = chatBody.scrollHeight;
+        displayText(message, text, 0);
+      }
+
+      let isUserAtBottom = true; // 초기에 스크롤이 맨 밑에 있다고 가정
+
+      // 사용자가 스크롤을 이동했는지 여부를 감지
+      chatBody.addEventListener("scroll", () => {
+        isUserAtBottom =
+          chatBody.scrollHeight - chatBody.scrollTop === chatBody.clientHeight;
+      });
+
+      // ChatGPT처럼 한 글자씩 출력하도록...
+
+      let brFlag = false;
+    function displayText(botMessage, text, index) {
+            if (index < text.length) {
+                if (text[index] == '<') {
+                    brFlag = true;                    
+                    setTimeout(function() {
+                        displayText(botMessage, text, index + 1);
+                    }, 30); 
+                }
+                else if (brFlag == true && (text[index] == 'b' || text[index] == 'r' || text[index] == '>')) {
+                    if (text[index] == '>') {
+                        brFlag = false;
+                        botMessage.innerHTML += "<br>";
+                    }
+                    setTimeout(function() {
+                        displayText(botMessage, text, index + 1);
+                    }, 30); 
+                }
+                else {
+                    botMessage.innerHTML += text[index];
+                    setTimeout(function() {
+                        displayText(botMessage, text, index + 1);
+                    }, 30); 
+                }
+                
+            } 
         }
 
-    </script>
-</body>
 
+
+      function displayText(contentDiv, text, index, callback, character) {
+        if (index < text.length) {
+          if (isUserAtBottom) {
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }
+
+          if (text[index] == '<') {
+              brFlag = true;                    
+              setTimeout(function() {
+                  displayText(contentDiv, text, index + 1, callback, character);
+              }, 30); 
+          } else if (brFlag == true && (text[index] == 'b' || text[index] == 'r' || text[index] == '>')) {
+            if (text[index] == '>') {
+                brFlag = false;
+                contentDiv.innerHTML += "<br>";
+            }
+            setTimeout(function() {
+                displayText(contentDiv, text, index + 1, callback, character);
+            }, 30); 
+          } else {
+            contentDiv.innerHTML += text[index];
+            setTimeout(function() {
+                        displayText(contentDiv, text, index + 1, callback, character);
+            }, 30); 
+          }        
+        } else {
+          // 1초 후 물어보기 실행
+          if (callback) {
+            setTimeout(function () {
+              callback(character);
+            }, 1000);
+          }
+        }
+      } // end
+
+    </script>
+  </body>
 </html>
