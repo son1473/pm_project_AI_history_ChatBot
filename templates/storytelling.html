@@ -268,7 +268,7 @@
             ② 앙부일구<br>
             앙부일구란 세종 때 만들어진 해시계야. 시계 가운데에 있는 바늘의 그림자가 가리키는 곳에 따라 시간과 절기를 알 수 있었어. 특히 농사를 짓는 백성들에게는 절기가 매우 중요한데 세종대왕은 누구나 시간을 알 수 있도록 사람이 많이 다니는 곳에 해시계를 두었어. 또한 글자를 모르는 사람을 위해서 글자 대신에 12지신 동물을 그림으로 표현하며 누구나 시간을 읽을 수 있도록 했어.<br>
 
-            그밖에도 시간을 정확히 재는 물시계 자격루, 하늘의 별을 관측하는 혼천의, 비의 양을 측정하는 측우기, 농사 짓는 방법을 정리한 책인 『농사직설』도 편찬했어."<br>
+            그밖에도 시간을 정확히 재는 물시계 자격루, 하늘의 별을 관측하는 혼천의, 비의 양을 측정하는 측우기, 농사 짓는 방법을 정리한 책인 『농사직설』도 편찬했어. <br>
             `,   
         "음악, 아악" :
           "세종대왕은 음악과 예의를 중시하여 나라를 다스리기 위해 노력했어. 박연과 함께 아악이라는 새로운 음악을 창조했는데, 이는 유교적 의식에서 사용되었어. 세종대왕은 아악을 통해 사람들 사이의 예의를 더욱 강화하고자 했고, 이를 위해 여러 악기와 정간보라는 특별한 악보도 개발했어. 세종대왕의 음악적 업적은 조선의 문화를 풍부하게 만들었고, 예의와 음악을 통해 조선이 질서 정연하고 아름다운 나라로 발전할 수 있었어."
@@ -334,6 +334,32 @@
         "감옥에서의 교육 활동":
           "안중근은 뤼순 감옥에서 수감되면서 단순히 자신의 신념을 적는 것에 그치지 않았어. 그는 다른 수감자들에게 한자를 가르치고 민족의 역사를 전하며 민족의식을 심었어. 그의 교육 활동은 많은 수감자들에게 큰 영향을 미쳤고, 일부는 이후 독립운동에 참여했어. 안중근은 감옥에서도 자신의 역할을 다하며 많은 사람들에게 감동을 주었어.",
       };
+
+      //유저클릭 시 응답 2
+//       function selectOptionByUser(option, type, character) {
+//     // 유저 클릭시 유저 메시지로 보내질 내용
+//     let newMessage = document.createElement("div");
+//     newMessage.className = "sent-message";
+//     newMessage.innerHTML = `
+//         <div class="sent-message-box">
+//             <div class="message-text">${option}</div>
+//         </div>
+//     `;
+
+//     // 새로운 메시지를 chat-body에 추가
+//     chatBody.appendChild(newMessage);
+
+//     // Scroll to the bottom of the chat body (optional)
+//     chatBody.scrollTop = chatBody.scrollHeight;
+
+//     // whatjob 또는 다른 함수 호출
+//     if (type === 'job') {
+//         whatjob(character, option);
+//     } else if (type === 'story') {
+//         whatstory(character, option);
+//     }
+// }
+
 
       // 유저 클릭시 응답
       function selectOptionByUser(message) {
@@ -434,8 +460,7 @@
     //인물 별 메인으로 이동
       //선덕여왕 - 업적->홈
       function sunduk_back_job(character) {
-        //sunduk_job_home = ['백성들을 위한 따뜻한 마음', '나라를 지키는 상징, 구층목탑', '위기와 죽음']
-         
+
         let newMessage = document.createElement("div");
         newMessage.className = "npc";
         newMessage.innerHTML = `
@@ -449,7 +474,7 @@
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
             ${sunduk_job_list.map(job => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
                     ${job}
                 </div>
             `).join('')}
@@ -485,7 +510,7 @@
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
             ${sunduk_story_list.map(story => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); funstory('${character}', '${story}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
                     ${story}
                 </div>
             `).join('')}
@@ -521,7 +546,7 @@
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
             ${sejong_job_list.map(job => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
                     ${job}
                 </div>
             `).join('')}
@@ -557,9 +582,9 @@
                 </div>
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
-            ${sejong_story_list.map(job => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); funstory('${character}', '${job}');">
-                    ${job}
+            ${sejong_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                    ${story}
                 </div>
             `).join('')}
             <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
@@ -595,7 +620,7 @@
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
             ${ahn_job_list.map(job => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); jobInfo('${job}', '${character}');">
                     ${job}
                 </div>
             `).join('')}
@@ -631,9 +656,9 @@
                 </div>
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
-            ${ahn_story_list.map(job => `
-                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); funstory('${character}', '${job}');">
-                    ${job}
+            ${ahn_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); storyInfo('${story}', '${character}');">
+                    ${story}
                 </div>
             `).join('')}
             <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
