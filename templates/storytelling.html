@@ -431,9 +431,10 @@
         displayText(message, text, 0);
       }
 
-      //인물 별 메인으로 이동
+    //인물 별 메인으로 이동
+      //선덕여왕 - 업적->홈
       function sunduk_back_job(character) {
-        sunduk_job_home = ['백성들을 위한 따뜻한 마음', '나라를 지키는 상징, 구층목탑', '위기와 죽음']
+        //sunduk_job_home = ['백성들을 위한 따뜻한 마음', '나라를 지키는 상징, 구층목탑', '위기와 죽음']
          
         let newMessage = document.createElement("div");
         newMessage.className = "npc";
@@ -447,7 +448,7 @@
                 </div>
                 <!-- npc 채팅 옵션 -->
                  <div class="npc-options npc-options-vertical">
-            ${sunduk_job_home.map(job => `
+            ${sunduk_job_list.map(job => `
                 <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
                     ${job}
                 </div>
@@ -468,7 +469,190 @@
         //displayText(message, text, 0);
       }
 
+      //선덕여왕 스토리 -> 홈
+      function sunduk_back_story(character) {
+          //sunduk_story_home = ['향기 없는 꽃의 비밀', '개구리들의 비밀 신호', '마지막 예언']
+          let newMessage = document.createElement("div");
+          newMessage.className = "npc";
+          newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sunduk_story_list.map(story => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${story}'); funstory('${character}', '${story}');">
+                    ${story}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                선덕여왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
 
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //세종대왕 업적 -> 홈
+      function sejong_back_job(character) {
+        //sejong_job_home = ['평화로운 유교 정치', '책을 만드는 집현전', '훈민정음, 한글의 탄생','눈부신 과학기술의 발전', '음악, 아악' ]
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sejong_job_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                세종대왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //세종대왕 스토리 -> 홈
+      function sejong_back_story(character) {
+        //sejong_story_home = ['평화로운 초정 약수 이야기', '고기를 좋아하는 세종', '한글 창제']
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sejong_story_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); funstory('${character}', '${job}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                세종대왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //안중근 업적 -> 홈
+      function ann_back_job(character) {
+        //ann_job_home = ['독립을 위한 망명과 활동 ', '일본의 압박과 을사늑약', '항일 의병 투쟁','이토 히로부미 저격', '의연한 재판과 순국' ]
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${ahn_job_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                안중근의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+      //안중근 스토리 -> 홈
+      function ann_back_story(character) {
+        //ann_story_home = ['손가락의 단지', '하얼빈에서의 준비', '감옥에서의 교육 활동']
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${ahn_story_list.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); funstory('${character}', '${job}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                안중근의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 이야기도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+    
 
       // 어떤 사람이야? - 기본 정보
       function whatkindofperson(character) {
@@ -591,14 +775,13 @@
         let text = `${job_answer[`${job}`]}`;
 
         if (character === "세종대왕") {
-          displayText(message, text, 0, sunduk_back_job, character)
+          displayText(message, text, 0, sejong_back_job, character)
         } else if (character === "선덕여왕") {
           displayText(message, text, 0, sunduk_back_job, character);
          
         } else if (character === "안중근") {
-          displayText(message, text, 0, sunduk_back_job, character);
+          displayText(message, text, 0, ann_back_job, character);
         }
-        //displayText(message, text, 0, whatdoyouwanttoknow2, character);
 
         // whatdoyouwanttoknow2('${character}');
       }
@@ -688,7 +871,16 @@
         let message = newMessage.querySelector(".message-text");
         let text = `${story_answer[`${story}`]}`;
 
-        displayText(message, text, 0, whatdoyouwanttoknow2, character);
+        if (character === "세종대왕") {
+          displayText(message, text, 0, sejong_back_story, character)
+        } else if (character === "선덕여왕") {
+          displayText(message, text, 0, sunduk_back_story, character);
+         
+        } else if (character === "안중근") {
+          displayText(message, text, 0, ann_back_story, character);
+        }
+
+        //displayText(message, text, 0, whatdoyouwanttoknow2, character);
       }
 
       function knowmore(character) {
