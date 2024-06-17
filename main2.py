@@ -18,10 +18,8 @@ from langchain_community.document_loaders import TextLoader # 문서 호출기
 from langchain.text_splitter import RecursiveCharacterTextSplitter # 반복적 문자 split
 
 from langchain_openai import OpenAIEmbeddings # 임베딩이 벡터에 넣는거
-# from langchain_community.vectorstores import Chroma #vectorstorese 임베딩
-
-loader = TextLoader('./data/kingsejong.txt', encoding='utf-8')
-documents = loader.load()
+#from langchain_community.vectorstores import Chroma #vectorstorese 임베딩
+from langchain_community.vectorstores import Chroma 
 
 
 # .env 파일에서 환경 변수 로드
@@ -36,76 +34,233 @@ os.environ['OPENAI_API_KEY'] = api_key
 # Flask 애플리케이션 인스턴스 초기화 및 생성
 # app = Flask(__name__)
 
+# 시스템 메시지 설정
+messages = [
+    SystemMessage(
+        content="너는 지금부터 세종대왕이야 어린이 말투로 대화해야해, 말투는 아이들에게 친절하게 대답해주듯이 대화해줘."
+    ),
+    # HumanMessage(
+    #     content="세종대왕님 몇살이에요?"
+    # ),
+]
+
+# 텍스트 파일 경로 설정
+file_paths = {
+    "queensunduk": './data/queensunduk.txt',
+    "kingsejong": './data/kingsejong.txt',
+    "ahnjunggeun": './data/ahnjunggeun.txt'
+}
+
+# 텍스트 파일 읽기
+raw_texts = {}
+for character, file_path in file_paths.items():
+    with open(file_path, 'r', encoding='utf-8') as file:
+        raw_texts[character] = file.read()
 
 # ChatGPT 모델 설정
-model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=500)  # 또는 원하는 모델 선택
+model = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=500)  # 또는 원하는 모델 선택
 # model = ChatOpenAI(model="gpt-3.5-turbo")  # 또는 원하는 모델 선택
 # model = ChatOpenAI(model="gpt-4o")  # 또는 원하는 모델 선택
 
-messages = [
-    SystemMessage(
-        content="너는 지금부터 세종대왕이야 세종대왕의 말투로 대화해야해, 말투는 아이들에게 친절하게 대답해주듯이 대화해줘."
-    ),
-    HumanMessage(
-        content="세종대왕님 몇살이에요?"
-    ),
-]
-
-# response = model.invoke(messages)
 
 
-# print(response)
+#response = model.invoke(messages)
+
+
+#print(response)
 # response = model.invoke("넌 지금부터 세종대왕이야, 세종대왕의 말투로 초등학생에게 친절히 답변해줘. 세종대왕님 지금 몇살이에요? 이 질문에 답변해줘")
 # print(response)
+# -------------------------------------------------------------------
+
+# RAG 검색할 정보 문서 불러오기
+loader = TextLoader('./data/kingsejong.txt', encoding='utf-8')
+documents = loader.load()
 
 
+# 문서 split하기
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200)
 splited_docs = text_splitter.split_documents(documents)
 # print(len(splited_docs))
 print(splited_docs[10].page_content)
 
-# vectorstore = Chroma.from_documents(
-#     documents=splited_docs, embedding=OpenAIEmbeddings())
+# 문서 벡터화하기
+vectorstore = Chroma.from_documents(
+    documents=splited_docs, embedding=OpenAIEmbeddings())
+
+# 벡터에서 찾기
 # docs = vectorstore.similarity_search("세종대왕이 언제 즉위했는지 알려달라")
 # print(len(docs))
 # print(docs[0].page_content)
 
-qa_chain = load_qa_chain(model, chain_type="map_reduce")
-qa_document_chain = AnalyzeDocumentChain(combine_docs_chain=qa_chain)
 
-raw_text = """
-세종대왕
+system_message = SystemMessage(
+        content="너는 지금부터 세종대왕이야 어린이 말투로 대화해야해, 말투는 아이들에게 친절하게 대답해주듯이 대화해줘."
+    )
 
-기본 정보
+# qa_chain = load_qa_chain(model, chain_type="map_reduce") # 요약하는 타입으로 체인을 설정하겠다.
+# # qa_document_chain = AnalyzeDocumentChain(combine_docs_chain=qa_chain, retriever=vectorstore.as_retriever())
+# # qa_document_chain = AnalyzeDocumentChain(combine_docs_chain=qa_chain)
+# qa_document_chain = AnalyzeDocumentChain(
+#     combine_docs_chain=qa_chain,
+#     # question_prompt=HumanMessage(content="Analyze the following document: {input}"),
+#     combine_docs_prompt=system_message
+# )
 
-아주 오랜 옛날, 조선이라는 나라가 있었어요. 그 나라에는 세종대왕이라는 훌륭한 왕이 있었어요. 세종대왕은 1397년 4월 10일에 태어났어요. 그의 진짜 이름은 '이도'였고, 세종은 그의 왕 이름이에요. 세종대왕의 아버지는 태종이라는 왕이었고, 어머니는 원경왕후 민씨였어요.
+# System message 정의
+# system_message = SystemMessage(content="You are a helpful AI assistant that analyzes documents.")
 
-세종대왕은 어릴 때부터 똑똑하고 착한 아이였어요. 그래서 1408년에 충녕군이라는 높은 자리에 오르게 되었어요. 1418년에는 형인 양녕대군이 왕이 되기에 적합하지 않다고 판단되어, 세종대왕이 왕의 자리에 오르게 되었어요. 이때 나이는 겨우 22살이었어요.
+# system_message = "You are a helpful AI assistant that answers questions about the given text."
+# human_prompt = "Answer the following question using the provided text: {question}"
 
-세종대왕(이도, 자는 원정)은 조선의 태종의 셋째 아들로, 원래 태종의 뒤를 이을 왕세자는 양녕대군이었습니다. 그러나 양녕대군이 여러 사건으로 인해 세자로서의 품위를 손상시키자, 태종은 그를 폐위하고 학문에 능하고 정치에 유능한 충녕대군(세종)을 세자로 책봉했습니다. 1418년 6월 세자가 된 세종은 두 달 뒤인 8월에 왕위에 올라 조선의 네 번째 왕이 되었습니다.
-
-세종대왕은 왕이 된 초반에 장인이 처형되고 처가가 풍비박산되는 비극을 겪었어요. 또한, 사랑하는 자식들과 아내가 먼저 세상을 떠나서 많은 슬픔을 겪었어요. 세종대왕 자신도 여러 가지 질병으로 고통받았어요.
-
-이러한 어려움 속에서도 세종대왕은 나라를 잘 다스리고, 백성들을 위해 많은 일을 했어요. 세종대왕 덕분에 우리는 한글을 사용할 수 있고, 다양한 문화와 과학의 발전을 누릴 수 있게 되었어요. 세종대왕은 정말 위대한 왕이었어요. 그는 1450년에 54세의 나이로 세상을 떠났지만, 그의 업적은 오늘날까지도 기억되고 있어요.
-
-많은 신하들의 거센 반대에도 불구하고 새로운 글자를 만든 이 사람은 누구일까요? 그는 왜 새로운 글자를 만들었을까요?
-
-세종대왕은 1420년, 왕이 된 지 얼마 되지 않아 학문과 나라의 정책을 연구하는 집현전을 설치하였어요. 집현전 학사들은 젊고 유능한 사람들 가운데 선발되었어요. 세종대왕은 집현전 학사들이 일정 기간 동안 집현전에서만 근무하도록 하여 전문성을 쌓을 수 있게 했어요. 집현전을 통한 인재 양성과 더불어 세종대왕은 농업을 장려하고 다양한 천문 과학 기기를 개발하여 백성들에게 도움이 되도록 했어요.
-
-세종대왕은 백성들이 쉽게 읽고 쓸 수 있도록 한글을 만들었어요. 그 결과 우리는 오늘날 한글을 사용할 수 있게 되었어요. 세종대왕의 업적은 한글뿐만 아니라 다양한 문화와 과학의 발전에도 큰 영향을 미쳤어요. 세종대왕은 정말로 위대한 왕이었답니다.
-
+# system_prompt = SystemMessagePromptTemplate(prompt=system_message)
+# system_prompt = SystemMessagePromptTemplate(prompt={"content": system_message})
 
 
-"""
 
-res = qa_document_chain.invoke(
+# # load_qa_chain을 통해 qa_chain 생성
+# qa_chain = load_qa_chain(
+#     llm=model,
+#     type="stuff",
+#     # prompt=HumanMessage(content="Answer the following question using the provided text: {question}"),
+#     # system_prompt=SystemMessage(content="You are a helpful AI assistant that answers questions about the given text.")
+#     # system_prompt=system_prompt
+# )
+
+# # AnalyzeDocumentChain 생성
+# qa_document_chain = AnalyzeDocumentChain(
+#     llm=model,
+#     question_chain=qa_chain,
+#     # combine_docs_prompt=system_message
+# )
+
+# from langchain import hub
+# prompt = hub.pull("rlm/rag-prompt")
+
+from langchain.chains import RetrievalQA
+
+# system_message = ''' 
+# 너는 지금부터 세종대왕이야 세종대왕의 말투로 대화해야해, 말투는 아이들에게 친절하게 대답해주듯이 대화해줘.
+# # '''
+
+# qa_chain = RetrievalQA.from_chain_type(
+#     llm = model,
+#     chain_type = "stuff",
+#     retriever = vectorstore.as_retriever(),
+#     # chain_type_kwargs = {"prompt": prompt}
+#     # chain_type_kwargs={"system_message": system_message}
+#     )
+
+# res = qa_chain.invoke(
     
-    input_document=raw_text,
-    question="세종대왕은 언제 즉위했나요?")
+#     {"input": "세종대왕님 몇살이세요?"})
+# print(res)
+
+# qa_document_chain.invoke()
+
+response = qa_document_chain.run(
+        input_document=raw_texts["kingsejong"],
+        question="세종대왕님 몇살이세요?",
+        # messages=messages
+    )
+
+print(response)
 
 
-print(res)
+
+# res = qa_document_chain.invoke(
+#     input=raw_text,
+#     # input_document=raw_text,
+#     question="세종대왕은 언제 즉위했나요?")
+
+
+
+# from langchain.chains.conversation.memory import ConversationBufferWindowMemory
+
+# conversational_memory = ConversationBufferWindowMemory(
+#     memory_key = "chat_history", return_message = True
+# )
+# conversational_memory.save_context({"input": "안녕"}, {"output": "반갑습니다"})
+
+# conversational_memory = ConversationBufferWindowMemory(
+#     k=5
+# )
+
+from langchain.tools import Tool
+
+tools = [ 
+    Tool (
+        name="qa-vet", 
+        func = qa_chain.run,
+        description="Useful when you need to answer vet questions",
+        )
+    ]
+
+
+from langchain.agents import initialize_agent
+from langchain.agents.types import AgentType
+
+
+executor = initialize_agent(
+    agent = AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
+    # tools = tools,
+    llm = model,
+    # memory=conversational_memory,
+    agent_kwargs={"system_message": system_message},
+    verbose = True
+)
+
+# print(executor)
+
+# 질문
+question = "몇 살이세요?"
+
+# 에이전트에게 질문하기
+response = executor.invoke({"input": question})
+
+# 응답 출력
+# print(response)
+
+
+
+# # que = "다음 질문에 대해 세종대왕인 것처럼 답변해주세요, 세종대왕은 를 아세요?"
+# que = "넌 지금부터 세종대왕이야, 세종대왕의 말투로 초등학생에게 친절히 답변해줘. 세종대왕님 지금 몇살이에요? 이 질문에 답변해줘"
+# response = qa_chain.invoke({"query": que})
+# # response = qa_chain.invoke(messages)
+
+# print(response['result'])
+# raw_text = """
+# 세종대왕
+
+# 기본 정보
+
+# 아주 오랜 옛날, 조선이라는 나라가 있었어요. 그 나라에는 세종대왕이라는 훌륭한 왕이 있었어요. 세종대왕은 1397년 4월 10일에 태어났어요. 그의 진짜 이름은 '이도'였고, 세종은 그의 왕 이름이에요. 세종대왕의 아버지는 태종이라는 왕이었고, 어머니는 원경왕후 민씨였어요.
+
+# 세종대왕은 어릴 때부터 똑똑하고 착한 아이였어요. 그래서 1408년에 충녕군이라는 높은 자리에 오르게 되었어요. 1418년에는 형인 양녕대군이 왕이 되기에 적합하지 않다고 판단되어, 세종대왕이 왕의 자리에 오르게 되었어요. 이때 나이는 겨우 22살이었어요.
+
+# 세종대왕(이도, 자는 원정)은 조선의 태종의 셋째 아들로, 원래 태종의 뒤를 이을 왕세자는 양녕대군이었습니다. 그러나 양녕대군이 여러 사건으로 인해 세자로서의 품위를 손상시키자, 태종은 그를 폐위하고 학문에 능하고 정치에 유능한 충녕대군(세종)을 세자로 책봉했습니다. 1418년 6월 세자가 된 세종은 두 달 뒤인 8월에 왕위에 올라 조선의 네 번째 왕이 되었습니다.
+
+# 세종대왕은 왕이 된 초반에 장인이 처형되고 처가가 풍비박산되는 비극을 겪었어요. 또한, 사랑하는 자식들과 아내가 먼저 세상을 떠나서 많은 슬픔을 겪었어요. 세종대왕 자신도 여러 가지 질병으로 고통받았어요.
+
+# 이러한 어려움 속에서도 세종대왕은 나라를 잘 다스리고, 백성들을 위해 많은 일을 했어요. 세종대왕 덕분에 우리는 한글을 사용할 수 있고, 다양한 문화와 과학의 발전을 누릴 수 있게 되었어요. 세종대왕은 정말 위대한 왕이었어요. 그는 1450년에 54세의 나이로 세상을 떠났지만, 그의 업적은 오늘날까지도 기억되고 있어요.
+
+# 많은 신하들의 거센 반대에도 불구하고 새로운 글자를 만든 이 사람은 누구일까요? 그는 왜 새로운 글자를 만들었을까요?
+
+# 세종대왕은 1420년, 왕이 된 지 얼마 되지 않아 학문과 나라의 정책을 연구하는 집현전을 설치하였어요. 집현전 학사들은 젊고 유능한 사람들 가운데 선발되었어요. 세종대왕은 집현전 학사들이 일정 기간 동안 집현전에서만 근무하도록 하여 전문성을 쌓을 수 있게 했어요. 집현전을 통한 인재 양성과 더불어 세종대왕은 농업을 장려하고 다양한 천문 과학 기기를 개발하여 백성들에게 도움이 되도록 했어요.
+
+# 세종대왕은 백성들이 쉽게 읽고 쓸 수 있도록 한글을 만들었어요. 그 결과 우리는 오늘날 한글을 사용할 수 있게 되었어요. 세종대왕의 업적은 한글뿐만 아니라 다양한 문화와 과학의 발전에도 큰 영향을 미쳤어요. 세종대왕은 정말로 위대한 왕이었답니다.
+
+
+
+# """
+
+# res = qa_document_chain.invoke(
+#     input=raw_text,
+#     # input_document=raw_text,
+#     question="세종대왕은 언제 즉위했나요?")
+
+
+# print(res)
 
 # # 세션 상태 초기화
 # session_state = {
