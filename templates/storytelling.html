@@ -431,6 +431,45 @@
         displayText(message, text, 0);
       }
 
+      //인물 별 메인으로 이동
+      function sunduk_back_job(character) {
+        sunduk_job_home = ['백성들을 위한 따뜻한 마음', '나라를 지키는 상징, 구층목탑', '위기와 죽음']
+         
+        let newMessage = document.createElement("div");
+        newMessage.className = "npc";
+        newMessage.innerHTML = `
+                <div class="npc-message">
+                    <img src="/static/owl.png" height="50px" alt="" />
+                    <div class="npc-message-box">
+                        <div class="message-sender">역사 천재</div>
+                        <div class="message-text"></div>
+                    </div>
+                </div>
+                <!-- npc 채팅 옵션 -->
+                 <div class="npc-options npc-options-vertical">
+            ${sunduk_job_home.map(job => `
+                <div class="btn npc-option" onclick="selectOptionByUser('${job}'); whatjob('${character}', '${job}');">
+                    ${job}
+                </div>
+            `).join('')}
+            <div class="btn npc-option" style="background-color: #FFD464" onclick="whatdoyouwanttoknow2('${character}');">
+                선덕여왕의 다른 걸 볼래
+            </div>
+        </div>
+            `;
+
+        chatBody.appendChild(newMessage);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        let message = newMessage.querySelector(".message-text");
+        let text = `${character}의 다른 업적도 알아볼래?`;
+
+        displayText(message, text, 0);
+        //displayText(message, text, 0);
+      }
+
+
+
       // 어떤 사람이야? - 기본 정보
       function whatkindofperson(character) {
         let info = "";
@@ -551,7 +590,16 @@
         let message = newMessage.querySelector(".message-text");
         let text = `${job_answer[`${job}`]}`;
 
-        displayText(message, text, 0, whatdoyouwanttoknow2, character);
+        if (character === "세종대왕") {
+          displayText(message, text, 0, sunduk_back_job, character)
+        } else if (character === "선덕여왕") {
+          displayText(message, text, 0, sunduk_back_job, character);
+         
+        } else if (character === "안중근") {
+          displayText(message, text, 0, sunduk_back_job, character);
+        }
+        //displayText(message, text, 0, whatdoyouwanttoknow2, character);
+
         // whatdoyouwanttoknow2('${character}');
       }
 
@@ -797,7 +845,6 @@
           }
         }
       } // end
-
 
     </script>
   </body>
