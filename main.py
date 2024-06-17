@@ -33,7 +33,7 @@ for character, file_path in file_paths.items():
         raw_texts[character] = file.read()
 
 # ChatGPT 모델 설정
-model = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=500)  # 또는 원하는 모델 선택
+model = ChatOpenAI(model="gpt-4o", temperature=0)  # 또는 원하는 모델 선택
 # model = ChatOpenAI(model="gpt-3.5-turbo")  # 또는 원하는 모델 선택
 qa_chain = load_qa_chain(model, chain_type="map_reduce")
 qa_document_chain = AnalyzeDocumentChain(combine_docs_chain=qa_chain)
@@ -59,6 +59,7 @@ character_messages = {
         당신은 조선, 근현대의 사실과 관련된 사실에 대해 전혀 알지 못한다.
         질문에 관련된 답변만 말해줘.
         관련 없는 부가설명 자중해.
+        인사 하지마.
         200자 이내로 답변해줘.
     """,
     "kingsejong": """
@@ -78,6 +79,7 @@ character_messages = {
         말투는 -오, -라로 끝내줘.
         말투에 아이야를 하지말아줘.
         관련 없는 부가설명 자중해.
+        인사 하지마.
         200자 이내로 답변해줘.
     """,
     "ahnjunggeun": """
@@ -92,6 +94,7 @@ character_messages = {
         답변을 시작할 때 '나는 조국의 독립을 위해 싸운 안중근이다.'라는 문장은 사용하지 않는다.
         -(이)다의 형태의 말은 자중해.
         관련 없는 부가설명 자중해.
+        인사 하지마.
         200자 이내로 답변해줘.
     """
 }
